@@ -59,26 +59,31 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-bold mb-4">Tài nguyên</h4>
+            <h4 className="text-lg font-bold mb-4">MLN131-Nhóm 1</h4>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Khóa học
+                  Nguyen Tran Khanh Kien
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Tài liệu
+                  Huynh Ngoc Ky
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Tin tức
+                  Huynh Nguyen Que Tran
                 </a>
               </li>
               <li>
                 <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Liên hệ
+                  Huynh Ngoc Khanh
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors">
+                  Che Gia Huy
                 </a>
               </li>
             </ul>

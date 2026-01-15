@@ -23,10 +23,10 @@ function App() {
           <Hero />
           <About />
           <Challenges />
+          <Impact />
           <Opportunities />
           <Solutions />
-          <Skills />
-          <Impact />
+          <Skills />         
         </>
       )}
 
