@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, XCircle, ArrowRight, RotateCcw, Target, Brain, Award, Home, Clock, Puzzle } from 'lucide-react';
-import { questions, Question } from '../data/questions';
+import { CheckCircle, ArrowRight, Target, Brain, Award, Home, Clock, Puzzle } from 'lucide-react';
+import { questions } from '../data/questions';
 import { useGameContext } from '../contexts/GameContext';
 
 interface IntegratedQuizPuzzleProps {
@@ -14,9 +14,8 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   onGoHome
 }) => {
   const MAX_QUESTIONS = 12;
-  const { gameState, updateQuizScore, updatePuzzleProgress } = useGameContext();
+  const { updateQuizScore, updatePuzzleProgress } = useGameContext();
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
-  const [selectedAnswer, setSelectedAnswer] = React.useState<number | null>(null);
   const [showExplanation, setShowExplanation] = React.useState(false);
   const [score, setScore] = React.useState(0);
   const [answeredQuestions, setAnsweredQuestions] = React.useState<boolean[]>(
@@ -32,33 +31,12 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   const [gamePhase, setGamePhase] = React.useState<'quiz' | 'keyword' | 'summary'>('quiz');
   const [guessInput, setGuessInput] = React.useState('');
   const [guessResult, setGuessResult] = React.useState<'correct' | 'wrong' | null>(null);
-  const [keywordInput, setKeywordInput] = React.useState('');
-  const [keywordResult, setKeywordResult] = React.useState<'correct' | 'wrong' | null>(null);
-  const [keywordQuestion, setKeywordQuestion] = React.useState<Question | null>(null);
   const [wordGuess, setWordGuess] = React.useState('');
-  const [guessedLetters, setGuessedLetters] = React.useState<Set<string>>(new Set());
   const [wrongGuesses, setWrongGuesses] = React.useState(0);
   const MAX_WRONG_GUESSES = 6;
 
-  // Random answers state
-  const [shuffledAnswers, setShuffledAnswers] = React.useState<{
-    options: string[];
-    correctIndex: number;
-    originalCorrectIndex: number;
-  }[]>([]);
-
   // Ref để theo dõi việc submit đang trong quá trình
   const isSubmittingRef = React.useRef(false);
-
-  // Function to shuffle array
-  const shuffleArray = <T,>(array: T[]): T[] => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
 
   // Get current question
   const currentQ = questions[currentQuestion];
@@ -92,56 +70,20 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
     }
   };
 
-  // Hangman logic - Fixed 15 letters A-O
-  const FIXED_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'];
-  
-  const getAvailableLetters = () => {
-    return FIXED_LETTERS.filter(letter => !guessedLetters.has(letter));
-  };
-
+  // Hangman logic
   const getHangmanEmoji = () => {
     const stages = ['😊', '😐', '😕', '😟'];
     return stages[Math.min(wrongGuesses, stages.length - 1)];
   };
 
-  const getDisplayWord = () => {
-    if (!currentQ.keyword) return '';
-    const keyword = currentQ.keyword.toUpperCase();
-    let revealed = '';
-    
-    // Mỗi lần sai hiện ra wrongGuesses chữ đầu tiên
-    if (wrongGuesses > 0) {
-      revealed = keyword.substring(0, Math.min(wrongGuesses, keyword.length));
-    }
-    
-    return keyword.split('').map((char, index) => {
-      if (guessedLetters.has(char) || index < revealed.length) {
-        return char;
-      }
-      return char === ' ' ? ' ' : '_';
-    }).join('');
-  };
-
-  const handleLetterGuess = (letter: string) => {
-    if (guessedLetters.has(letter) || answeredQuestions[currentQuestion]) return;
-
-    const newGuessedLetters = new Set(guessedLetters);
-    newGuessedLetters.add(letter);
-    setGuessedLetters(newGuessedLetters);
-
-    // Check if letter is in keyword
-    if (!currentQ.keyword?.toUpperCase().includes(letter)) {
-      const newWrongGuesses = wrongGuesses + 1;
-      setWrongGuesses(newWrongGuesses);
-    }
-  };
-
   const handleKeywordSubmit = () => {
     if (!wordGuess.trim() || answeredQuestions[currentQuestion]) return;
 
-    const userGuess = wordGuess.trim().toLowerCase();
-    const correctKeyword = currentQ.keywordVi?.toLowerCase() || '';
+    // Normalize: trim, lowercase, loại bỏ khoảng trắng thừa
+    const userGuess = wordGuess.trim().toLowerCase().replace(/\s+/g, ' ');
+    const correctKeyword = (currentQ.keywordVi?.toLowerCase() || '').replace(/\s+/g, ' ');
 
+    // So sánh chính xác
     if (userGuess === correctKeyword) {
       setGuessResult('correct');
       setScore(score + 1);
@@ -168,61 +110,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   };
 
   const resetHangman = () => {
-    setGuessedLetters(new Set());
     setWrongGuesses(0);
-  };
-
-  const handleWordGuess = () => {
-    if (!wordGuess.trim() || !currentQ.keyword || answeredQuestions[currentQuestion]) return;
-
-    const lowerGuess = wordGuess.toUpperCase().trim();
-    const correctKeyword = currentQ.keyword.toUpperCase();
-
-    if (lowerGuess === correctKeyword) {
-      setGuessResult('correct');
-      setScore(score + 1);
-      revealRandomPiece();
-
-      const newAnsweredQuestions = [...answeredQuestions];
-      newAnsweredQuestions[currentQuestion] = true;
-      setAnsweredQuestions(newAnsweredQuestions);
-      setShowExplanation(true);
-    } else {
-      setGuessResult('wrong');
-    }
-  };
-
-  const handleAnswerSelect = (answerIndex: number) => {
-    if (answeredQuestions[currentQuestion] || isSubmittingRef.current) return;
-
-    setSelectedAnswer(answerIndex);
-    isSubmittingRef.current = true;
-
-    // Auto-submit ngay khi chọn đáp án
-    setTimeout(() => {
-      if (!answeredQuestions[currentQuestion]) {
-        handleSubmitAnswer(answerIndex);
-      }
-      isSubmittingRef.current = false;
-    }, 500);
-  };
-
-  const handleSubmitAnswer = (answerIndex?: number) => {
-    const selectedAnswerIndex = answerIndex !== undefined ? answerIndex : selectedAnswer;
-    if (selectedAnswerIndex === null) return;
-
-    const isCorrect = selectedAnswerIndex === currentQ.correctAnswer;
-    if (isCorrect) {
-      setScore(score + 1);
-      // Mở mảnh puzzle ngay lập tức
-      revealRandomPiece();
-    }
-
-    const newAnsweredQuestions = [...answeredQuestions];
-    newAnsweredQuestions[currentQuestion] = true;
-    setAnsweredQuestions(newAnsweredQuestions);
-
-    setShowExplanation(true);
   };
 
   const handleNextQuestion = () => {
@@ -251,48 +139,6 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
       isSubmittingRef.current = false;
       resetHangman();
     }
-  };
-
-  const getAnswerClass = (index: number) => {
-    if (!answeredQuestions[currentQuestion]) {
-      // Highlight đáp án được chọn
-      if (index === selectedAnswer) {
-        return 'quiz-option selected';
-      }
-      return 'quiz-option';
-    }
-
-    if (index === currentQ.correctAnswer) {
-      return 'quiz-option correct';
-    }
-
-    if (index === selectedAnswer && index !== currentQ.correctAnswer) {
-      return 'quiz-option wrong';
-    }
-
-    return 'quiz-option';
-  };
-
-  const getAnswerIcon = (index: number) => {
-    if (!answeredQuestions[currentQuestion]) return null;
-
-    if (index === currentQ.correctAnswer) {
-      return <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />;
-    }
-
-    if (index === selectedAnswer && index !== currentQ.correctAnswer) {
-      return <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />;
-    }
-
-    return null;
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 14) return 'from-green-500 to-green-600';
-    if (score >= 12) return 'from-blue-500 to-blue-600';
-    if (score >= 10) return 'from-yellow-500 to-yellow-600';
-    if (score >= 8) return 'from-orange-500 to-orange-600';
-    return 'from-red-500 to-red-600';
   };
 
   const handleGuessSubmit = () => {
@@ -374,7 +220,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 <div className="text-center">
                   <Puzzle className="w-6 h-6 text-green-600 mx-auto mb-1" />
                   <div className="text-lg font-bold text-green-800 font-academic">
-                    {completedPieces}/8
+                    {completedPieces}/12
                   </div>
                   <div className="text-sm text-green-600 font-ui">Mảnh</div>
                 </div>
@@ -395,14 +241,14 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-medium text-gray-600 font-ui">Tiến độ Quiz</span>
                   <span className="text-sm font-medium text-gray-600 font-ui">
-                    {currentQuestion + 1}/8
+                    {currentQuestion + 1}/12
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <motion.div
                     className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full"
                     initial={{ width: 0 }}
-                    animate={{ width: `${((currentQuestion + 1) / 8) * 100}%` }}
+                    animate={{ width: `${((currentQuestion + 1) / 12) * 100}%` }}
                     transition={{ duration: 0.5 }}
                   />
                 </div>
@@ -412,7 +258,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-medium text-gray-600 font-ui">Tiến độ Puzzle</span>
                   <span className="text-sm font-medium text-gray-600 font-ui">
-                    {completedPieces}/8
+                    {completedPieces}/12
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
@@ -705,17 +551,45 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 className="max-w-2xl mx-auto mb-8"
               >
                 <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-8 shadow-2xl border-4 border-blue-300">
-                  {/* Display completed full image */}
+                  {/* Display completed puzzle with correct pieces only */}
                   <div className="mb-6 bg-white rounded-lg p-2 shadow-lg">
-                    <img 
-                      src="/images/robotarm.jpg" 
-                      alt="Công nghệ Robot Arm - Công nghiệp 4.0"
-                      className="w-full h-auto rounded"
-                    />
+                    {score === 12 ? (
+                      <img 
+                        src="/images/robotarm.jpg" 
+                        alt="Công nghệ Robot Arm - Công nghiệp 4.0"
+                        className="w-full h-auto rounded"
+                      />
+                    ) : (
+                      <div className="grid grid-cols-4 gap-2 p-4 bg-gray-100 rounded">
+                        {Array.from({ length: 12 }, (_, index) => (
+                          <motion.div
+                            key={index}
+                            className={`aspect-square flex items-center justify-center overflow-hidden transition-all duration-300 rounded border-2 ${
+                              puzzlePieces[index]
+                                ? 'border-green-500'
+                                : 'bg-gray-300 border-gray-400'
+                            }`}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: index * 0.02 }}
+                          >
+                            {puzzlePieces[index] ? (
+                              <img 
+                                src={`/images/pieces/image_part_${String(index + 1).padStart(3, '0')}.jpg`}
+                                alt={`Puzzle piece ${index + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <span className="text-lg font-bold text-gray-600">?</span>
+                            )}
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   
                   <p className="text-center text-gray-600 font-ui mb-4">
-                    Tất cả 12/12 mảnh puzzle đã được mở khóa!
+                    {score}/12 mảnh puzzle đã được mở khóa!
                   </p>
                   
                   {/* Stats */}
@@ -725,7 +599,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                       <div className="text-sm text-gray-600 font-ui">Điểm Quiz</div>
                     </div>
                     <div className="text-center bg-white rounded-lg p-4">
-                      <div className="text-2xl font-bold text-green-600 font-academic">100%</div>
+                      <div className="text-2xl font-bold text-green-600 font-academic">{Math.round((score / 12) * 100)}%</div>
                       <div className="text-sm text-gray-600 font-ui">Puzzle Hoàn Thành</div>
                     </div>
                     <div className="text-center bg-white rounded-lg p-4">
