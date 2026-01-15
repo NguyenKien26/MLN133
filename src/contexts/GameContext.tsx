@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface GameState {
-  currentStep: 'story' | 'quiz' | 'complete';
+  currentStep: 'quiz' | 'complete';
   quizScore: number;
   currentQuestion: number;
   timeSpent?: number;
@@ -35,11 +35,11 @@ interface GameProviderProps {
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [gameState, setGameState] = React.useState<GameState>({
-    currentStep: 'story',
+    currentStep: 'quiz',
     quizScore: 0,
     currentQuestion: 0,
     completedPuzzlePieces: 0,
-    totalPuzzlePieces: 16, // 16 mảnh puzzle cho Công nghiệp 4.0
+    totalPuzzlePieces: 8, // 8 mảnh puzzle cho Công nghiệp 4.0
   });
 
   const startQuiz = React.useCallback(() => {
@@ -60,11 +60,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   const resetGame = React.useCallback(() => {
     setGameState({
-      currentStep: 'story',
+      currentStep: 'quiz',
       quizScore: 0,
       currentQuestion: 0,
       completedPuzzlePieces: 0,
-      totalPuzzlePieces: 16,
+      totalPuzzlePieces: 8,
     });
   }, []);
 

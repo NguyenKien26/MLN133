@@ -19,7 +19,7 @@ export const questions: Question[] = [
     ],
     correctAnswer: 1,
     explanation: "Công nghiệp 4.0 là sự kết hợp của AI (trí tuệ nhân tạo), IoT (Internet vạn vật), Big Data, Robot và các công nghệ số khác.",
-    keyword: "CONGNGHIEP" // 10 chữ cái
+    keyword: "MACHINE" // 10 chữ cái
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ export const questions: Question[] = [
     ],
     correctAnswer: 0,
     explanation: "IoT (Internet of Things) là mạng lưới các thiết bị vật lý được kết nối internet, cho phép thu thập và trao đổi dữ liệu.",
-    keyword: "INTERNETOF" // 10 chữ cái
+    keyword: "CHAINED" // 10 chữ cái
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ export const questions: Question[] = [
     ],
     correctAnswer: 0,
     explanation: "Predictive Maintenance sử dụng AI và dữ liệu cảm biến để dự đoán khi nào thiết bị có thể hỏng, cho phép bảo trì chủ động.",
-    keyword: "PREDICTIVE" // 10 chữ cái
+    keyword: "AHEAD" // 10 chữ cái
   },
   {
     id: 3,
@@ -58,7 +58,7 @@ export const questions: Question[] = [
     ],
     correctAnswer: 1,
     explanation: "Big Data giúp phân tích dữ liệu lớn để dự đoán sự cố, tối ưu hóa hiệu suất và đưa ra quyết định thông minh.",
-    keyword: "BIGDATASET" // 10 chữ cái
+    keyword: "IDEA" // 10 chữ cái
   },
   {
     id: 4,
@@ -70,7 +70,8 @@ export const questions: Question[] = [
       "Thay thế tất cả máy móc cũ"
     ],
     correctAnswer: 1,
-    explanation: "Robot trong Công nghiệp 4.0 là công cụ hỗ trợ con người, đặc biệt trong các công việc đòi hỏi độ chính xác cao hoặc môi trường nguy hiểm."
+    explanation: "Robot trong Công nghiệp 4.0 là công cụ hỗ trợ con người, đặc biệt trong các công việc đòi hỏi độ chính xác cao hoặc môi trường nguy hiểm.",
+    keyword: "HAND"
   },
   {
     id: 5,
@@ -82,7 +83,8 @@ export const questions: Question[] = [
       "Chỉ tăng lương cho mọi người"
     ],
     correctAnswer: 1,
-    explanation: "Công nghiệp 4.0 tạo ra nhu cầu về kỹ năng mới như lập trình, phân tích dữ liệu, đồng thời giảm nhu cầu về công việc lặp lại."
+    explanation: "Công nghiệp 4.0 tạo ra nhu cầu về kỹ năng mới như lập trình, phân tích dữ liệu, đồng thời giảm nhu cầu về công việc lặp lại.",
+    keyword: "IDEAL"
   },
   {
     id: 6,
@@ -94,7 +96,8 @@ export const questions: Question[] = [
       "Gõ phím nhanh"
     ],
     correctAnswer: 1,
-    explanation: "Trong kỷ nguyên số, khả năng học tập suốt đời và thích ứng với thay đổi là quan trọng nhất vì công nghệ phát triển rất nhanh."
+    explanation: "Trong kỷ nguyên số, khả năng học tập suốt đời và thích ứng với thay đổi là quan trọng nhất vì công nghệ phát triển rất nhanh.",
+    keyword: "LEAD"
   },
   {
     id: 7,
@@ -106,7 +109,8 @@ export const questions: Question[] = [
       "Ứng dụng di động"
     ],
     correctAnswer: 1,
-    explanation: "Digital Twin là mô hình kỹ thuật số mô phỏng chính xác một vật thể, hệ thống hoặc quy trình trong thế giới thực."
+    explanation: "Digital Twin là mô hình kỹ thuật số mô phỏng chính xác một vật thể, hệ thống hoặc quy trình trong thế giới thực.",
+    keyword: "CHIEF"
   },
   {
     id: 8,
@@ -118,7 +122,8 @@ export const questions: Question[] = [
       "USB"
     ],
     correctAnswer: 1,
-    explanation: "IoT và các mạng lưới kết nối cho phép các thiết bị trao đổi dữ liệu với nhau một cách tự động."
+    explanation: "IoT và các mạng lưới kết nối cho phép các thiết bị trao đổi dữ liệu với nhau một cách tự động.",
+    keyword: "ONLINE"
   },
   {
     id: 9,
