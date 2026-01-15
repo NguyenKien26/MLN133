@@ -80,42 +80,6 @@ export default function Skills() {
             );
           })}
         </div>
-
-        <div className="mt-16 bg-blue-50 rounded-2xl p-8 sm:p-12 border border-blue-200">
-          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-            Hành trình học tập
-          </h3>
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg">
-                1
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Nền tảng</h4>
-              <p className="text-gray-600 text-sm">Học kỹ năng số cơ bản và máy tính</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg">
-                2
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Chuyên sâu</h4>
-              <p className="text-gray-600 text-sm">Phát triển kỹ năng chuyên ngành</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg">
-                3
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Thực hành</h4>
-              <p className="text-gray-600 text-sm">Áp dụng vào các dự án thực tế</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 text-2xl font-bold shadow-lg">
-                4
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Nâng cao</h4>
-              <p className="text-gray-600 text-sm">Học tập suốt đời và thích ứng</p>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
