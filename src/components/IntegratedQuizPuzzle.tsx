@@ -13,7 +13,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   onComplete,
   onGoHome
 }) => {
-  const MAX_QUESTIONS = 8;
+  const MAX_QUESTIONS = 12;
   const { gameState, updateQuizScore, updatePuzzleProgress } = useGameContext();
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
   const [selectedAnswer, setSelectedAnswer] = React.useState<number | null>(null);
@@ -24,9 +24,9 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   );
   const [timeSpent, setTimeSpent] = React.useState(0);
 
-  // Puzzle state - 8 pieces for Industry 4.0
+  // Puzzle state - 12 pieces for Industry 4.0
   const [puzzlePieces, setPuzzlePieces] = React.useState<boolean[]>(
-    new Array(8).fill(false)
+    new Array(12).fill(false)
   );
   const [showPuzzle, setShowPuzzle] = React.useState(false);
   const [gamePhase, setGamePhase] = React.useState<'quiz' | 'keyword' | 'summary'>('quiz');
@@ -106,8 +106,16 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
 
   const getDisplayWord = () => {
     if (!currentQ.keyword) return '';
-    return currentQ.keyword.toUpperCase().split('').map(char => {
-      if (guessedLetters.has(char)) {
+    const keyword = currentQ.keyword.toUpperCase();
+    let revealed = '';
+    
+    // Mỗi lần sai hiện ra wrongGuesses chữ đầu tiên
+    if (wrongGuesses > 0) {
+      revealed = keyword.substring(0, Math.min(wrongGuesses, keyword.length));
+    }
+    
+    return keyword.split('').map((char, index) => {
+      if (guessedLetters.has(char) || index < revealed.length) {
         return char;
       }
       return char === ' ' ? ' ' : '_';
@@ -131,10 +139,10 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   const handleKeywordSubmit = () => {
     if (!wordGuess.trim() || answeredQuestions[currentQuestion]) return;
 
-    const lowerGuess = wordGuess.toUpperCase().trim();
-    const correctKeyword = currentQ.keyword?.toUpperCase() || '';
+    const userGuess = wordGuess.trim().toLowerCase();
+    const correctKeyword = currentQ.keywordVi?.toLowerCase() || '';
 
-    if (lowerGuess === correctKeyword) {
+    if (userGuess === correctKeyword) {
       setGuessResult('correct');
       setScore(score + 1);
       revealRandomPiece();
@@ -149,6 +157,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
       setWordGuess('');
 
       if (newWrongGuesses >= 3) {
+        // Sai 3 lần - hiện toàn bộ đáp án
         setGuessResult('wrong');
         setShowExplanation(true);
         const newAnsweredQuestions = [...answeredQuestions];
@@ -226,7 +235,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
       isSubmittingRef.current = false;
       resetHangman();
     } else {
-      // Chuyển sang phase summary khi hoàn thành 8 câu
+      // Chuyển sang phase summary khi hoàn thành 12 câu
       setGamePhase('summary');
       updateQuizScore(score);
     }
@@ -357,7 +366,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 <div className="text-center">
                   <Target className="w-6 h-6 text-blue-600 mx-auto mb-1" />
                   <div className="text-lg font-bold text-blue-800 font-academic">
-                    {score}/8
+                    {score}/12
                   </div>
                   <div className="text-sm text-blue-600 font-ui">Điểm</div>
                 </div>
@@ -436,17 +445,17 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                     {currentQ.question}
                   </h3>
 
-                  {/* Word Guessing Section - Hangman Game */}
+                  {/* Word Guessing Section - Vietnamese Keyword Game */}
                   <div className="space-y-6">
-                    {/* Display keyword with blanks */}
+                    {/* Display keyword hint */}
                     <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border-2 border-blue-200">
-                      <p className="text-sm text-gray-600 font-ui mb-3">🎮 Trò chơi Người Treo Cổ - Đoán từ khoá:</p>
+                      <p className="text-sm text-gray-600 font-ui mb-3">🎮 Đoán từ khoá - Đáp án sẽ dần hiện ra khi bạn trả lời sai:</p>
                       
-                      {/* Hangman visual and word display */}
-                      <div className="grid grid-cols-2 gap-6 mb-6">
-                        {/* Hangman emoji */}
-                        <div className="flex flex-col items-center justify-center">
-                          <div className="text-6xl mb-3">
+                      {/* Keyword display */}
+                      <div className="flex flex-col items-center justify-center mb-6">
+                        {/* Wrong attempts counter */}
+                        <div className="text-center mb-4">
+                          <div className="text-4xl font-bold mb-2">
                             {getHangmanEmoji()}
                           </div>
                           <p className="text-sm text-gray-600 font-ui font-bold">
@@ -454,73 +463,50 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                           </p>
                         </div>
 
-                        {/* Word display */}
-                        <div className="flex flex-col items-center justify-center">
-                          <div className="text-4xl font-bold tracking-widest text-blue-600 font-academic mb-2">
-                            {getDisplayWord().split('').map((char, idx) => (
-                              <span key={idx} className="inline-block w-8 h-10 leading-10 mx-1">
-                                {char}
-                              </span>
-                            ))}
-                          </div>
-                          <p className="text-xs text-gray-500 font-ui">
-                            {currentQ.keyword?.length} chữ cái
-                          </p>
+                        {/* Keyword hint display */}
+                        <div className="bg-white rounded-lg p-6 w-full text-center">
+                          {wrongGuesses === 0 ? (
+                            <p className="text-2xl text-gray-400 font-academic whitespace-nowrap">
+                              ●●●●●●●●●●●●●●●●●●●●
+                            </p>
+                          ) : (
+                            <motion.div
+                              key={wrongGuesses}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              className="text-2xl font-bold text-blue-600 font-academic whitespace-nowrap"
+                            >
+                              {currentQ.keywordVi?.substring(0, Math.min(wrongGuesses, currentQ.keywordVi?.length || 0))}
+                            </motion.div>
+                          )}
                         </div>
+                        <p className="text-xs text-gray-500 font-ui mt-2">
+                          {currentQ.keywordVi?.length} ký tự
+                        </p>
                       </div>
 
-                      {/* Letter buttons */}
+                      {/* Keyword input */}
                       {!answeredQuestions[currentQuestion] && wrongGuesses < 3 ? (
-                        <>
-                          <div className="mb-4">
-                            <p className="text-xs text-gray-600 font-ui mb-2">Chọn chữ cái ({getAvailableLetters().length} còn lại):</p>
-                            <div className="grid grid-cols-5 gap-2">
-                              {getAvailableLetters().map(letter => (
-                                <button
-                                  key={letter}
-                                  onClick={() => handleLetterGuess(letter)}
-                                  disabled={guessedLetters.has(letter) || answeredQuestions[currentQuestion]}
-                                  className={`py-2 px-1 rounded text-sm font-bold transition-all ${
-                                    guessedLetters.has(letter)
-                                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                      : 'bg-blue-500 text-white hover:bg-blue-600 active:scale-95'
-                                  }`}
-                                >
-                                  {letter}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Already guessed letters */}
-                          {guessedLetters.size > 0 && (
-                            <div className="text-xs text-gray-600 font-ui mb-4">
-                              <p className="mb-1">Chữ cái đã chọn: {Array.from(guessedLetters).join(', ')}</p>
-                            </div>
-                          )}
-
-                          {/* Keyword input */}
-                          <div className="space-y-3 border-t pt-4">
-                            <p className="text-sm text-gray-600 font-ui">Nhập từ khoá khi bạn tự tin:</p>
-                            <div className="flex gap-2">
-                              <input
-                                type="text"
-                                value={wordGuess}
-                                onChange={(e) => setWordGuess(e.target.value.toUpperCase())}
-                                onKeyPress={(e) => e.key === 'Enter' && handleKeywordSubmit()}
-                                placeholder="Nhập từ khoá..."
-                                className="flex-1 px-4 py-2 rounded-lg border-2 border-blue-300 focus:border-blue-600 focus:outline-none font-ui text-lg uppercase"
-                                autoFocus
-                              />
-                              <button
-                                onClick={handleKeywordSubmit}
-                                disabled={!wordGuess.trim()}
-                                className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                              >
-                                <CheckCircle className="w-4 h-4" />
-                                Trả lời
-                              </button>
-                            </div>
+                        <div className="space-y-3 border-t pt-4">
+                          <p className="text-sm text-gray-600 font-ui">Nhập từ khoá tiếng Việt khi bạn tự tin:</p>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={wordGuess}
+                              onChange={(e) => setWordGuess(e.target.value)}
+                              onKeyPress={(e) => e.key === 'Enter' && handleKeywordSubmit()}
+                              placeholder="Ví dụ: Làm chủ công nghệ"
+                              className="flex-1 px-4 py-2 rounded-lg border-2 border-blue-300 focus:border-blue-600 focus:outline-none font-ui text-lg"
+                              autoFocus
+                            />
+                            <button
+                              onClick={handleKeywordSubmit}
+                              disabled={!wordGuess.trim()}
+                              className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            >
+                              <CheckCircle className="w-4 h-4" />
+                              Trả lời
+                            </button>
                           </div>
 
                           {/* Wrong attempts feedback */}
@@ -528,19 +514,19 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                             <motion.div
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
-                              className="mt-3 p-3 bg-yellow-100 border border-yellow-400 rounded-lg text-yellow-700 text-sm font-ui text-center"
+                              className="p-3 bg-yellow-100 border border-yellow-400 rounded-lg text-yellow-700 text-sm font-ui text-center"
                             >
-                              Sai {wrongGuesses} lần {wrongGuesses === 3 ? '- Đáp án: ' + currentQ.keyword?.toUpperCase() : ''}
+                              Sai {wrongGuesses} lần {wrongGuesses === 3 ? '- Đáp án: ' + currentQ.keywordVi : 'rồi'}
                             </motion.div>
                           )}
-                        </>
+                        </div>
                       ) : guessResult === 'correct' && answeredQuestions[currentQuestion] ? (
                         <div className="bg-green-100 border border-green-400 rounded-lg p-4 text-center">
-                          <p className="text-green-700 font-semibold font-ui">✓ Chính xác! Từ khoá: {currentQ.keyword?.toUpperCase()}</p>
+                          <p className="text-green-700 font-semibold font-ui">✓ Chính xác! Từ khoá: {currentQ.keywordVi}</p>
                         </div>
                       ) : (
                         <div className="bg-red-100 border border-red-400 rounded-lg p-4 text-center">
-                          <p className="text-red-700 font-semibold font-ui mb-2">💀 Game Over! Từ khoá là: {currentQ.keyword?.toUpperCase()}</p>
+                          <p className="text-red-700 font-semibold font-ui mb-2">💀 Game Over! Từ khoá là: {currentQ.keywordVi}</p>
                           <button
                             onClick={() => {
                               resetHangman();
@@ -625,29 +611,33 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
 
                   {/* Mini puzzle grid */}
                   <div className="grid grid-cols-4 gap-1 mb-4">
-                    {Array.from({ length: 8 }, (_, index) => (
+                    {Array.from({ length: 12 }, (_, index) => (
                       <motion.div
                         key={index}
-                        className={`aspect-square flex items-center justify-center text-xl font-bold transition-all duration-300 rounded ${
+                        className={`aspect-square flex items-center justify-center overflow-hidden transition-all duration-300 rounded ${
                           puzzlePieces[index]
-                            ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white'
-                            : 'bg-gray-300 text-gray-600'
+                            ? 'border-2 border-green-500'
+                            : 'bg-gray-300 border-2 border-gray-400'
                         }`}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.02 }}
                       >
                         {puzzlePieces[index] ? (
-                          <CheckCircle className="w-6 h-6" />
+                          <img 
+                            src={`/images/pieces/image_part_${String(index + 1).padStart(3, '0')}.jpg`}
+                            alt={`Puzzle piece ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
-                          index + 1
+                          <span className="text-xl font-bold text-gray-600">{index + 1}</span>
                         )}
                       </motion.div>
                     ))}
                   </div>
 
                   <p className="text-center text-gray-600 font-ui text-sm">
-                    {completedPieces}/8 mảnh đã được mở khóa
+                    {completedPieces}/12 mảnh đã được mở khóa
                   </p>
                 </div>
 
@@ -703,7 +693,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                   Bí Ẩn Được Hé Lộ! 🎉
                 </motion.h1>
                 <p className="text-gray-600 font-ui text-lg">
-                  Bạn đã hoàn thành tất cả 8 câu hỏi! Đoán xem bức ảnh puzzle này là gì?
+                  Bạn đã hoàn thành tất cả 12 câu hỏi! Đoán xem bức ảnh puzzle này là gì?
                 </p>
               </div>
 
@@ -715,29 +705,23 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 className="max-w-2xl mx-auto mb-8"
               >
                 <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-8 shadow-2xl border-4 border-blue-300">
-                  {/* Display all completed puzzle pieces as a grid */}
-                  <div className="grid grid-cols-4 gap-0 mb-6 bg-white rounded-lg p-2">
-                    {Array.from({ length: 8 }, (_, index) => (
-                      <motion.div
-                        key={index}
-                        className="aspect-square bg-gradient-to-br from-blue-500 to-purple-600 rounded flex items-center justify-center text-white font-bold text-xl"
-                        initial={{ opacity: 0, rotate: -180 }}
-                        animate={{ opacity: 1, rotate: 0 }}
-                        transition={{ delay: index * 0.1, duration: 0.5 }}
-                      >
-                        ✓
-                      </motion.div>
-                    ))}
+                  {/* Display completed full image */}
+                  <div className="mb-6 bg-white rounded-lg p-2 shadow-lg">
+                    <img 
+                      src="/images/robotarm.jpg" 
+                      alt="Công nghệ Robot Arm - Công nghiệp 4.0"
+                      className="w-full h-auto rounded"
+                    />
                   </div>
                   
                   <p className="text-center text-gray-600 font-ui mb-4">
-                    Tất cả 8/8 mảnh puzzle đã được mở khóa!
+                    Tất cả 12/12 mảnh puzzle đã được mở khóa!
                   </p>
                   
                   {/* Stats */}
                   <div className="grid grid-cols-3 gap-4 mb-8">
                     <div className="text-center bg-white rounded-lg p-4">
-                      <div className="text-2xl font-bold text-blue-600 font-academic">{score}/8</div>
+                      <div className="text-2xl font-bold text-blue-600 font-academic">{score}/12</div>
                       <div className="text-sm text-gray-600 font-ui">Điểm Quiz</div>
                     </div>
                     <div className="text-center bg-white rounded-lg p-4">

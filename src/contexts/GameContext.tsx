@@ -39,7 +39,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     quizScore: 0,
     currentQuestion: 0,
     completedPuzzlePieces: 0,
-    totalPuzzlePieces: 8, // 8 mảnh puzzle cho Công nghiệp 4.0
+    totalPuzzlePieces: 12, // 12 mảnh puzzle cho Công nghiệp 4.0
   });
 
   const startQuiz = React.useCallback(() => {
@@ -64,7 +64,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       quizScore: 0,
       currentQuestion: 0,
       completedPuzzlePieces: 0,
-      totalPuzzlePieces: 8,
+      totalPuzzlePieces: 12,
     });
   }, []);
 

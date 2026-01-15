@@ -85,11 +85,11 @@ const GameLauncher: React.FC = () => {
           <div className="inline-flex items-center gap-6 bg-gray-50 rounded-full px-6 py-3">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span className="text-sm text-gray-600">8 câu hỏi quiz</span>
+              <span className="text-sm text-gray-600">12 câu hỏi quiz</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-              <span className="text-sm text-gray-600">8 mảnh puzzle</span>
+              <span className="text-sm text-gray-600">12 mảnh puzzle</span>
             </div>
           </div>
         </div>

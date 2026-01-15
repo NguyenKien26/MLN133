@@ -4,221 +4,177 @@ export interface Question {
   options: string[];
   correctAnswer: number;
   explanation: string;
-  keyword?: string; // Từ khóa để đoán (9-10 chữ cái)
+  keyword?: string; // Từ khóa (tiếng Anh để xử lý)
+  keywordVi?: string; // Từ khóa tiếng Việt để người dùng đoán
 }
 
 export const questions: Question[] = [
   {
     id: 1,
-    question: "Công nghiệp 4.0 kết hợp những công nghệ chính nào?",
+    question: "Đây là trạng thái mà dữ liệu, máy móc và con người luôn duy trì tương tác không ngắt quãng trong môi trường 4.0?",
     options: [
-      "Chỉ máy tính và internet",
-      "AI, IoT, Big Data, Robot và công nghệ số",
-      "Chỉ điện thoại thông minh",
-      "Máy in và máy fax"
+      "Kết nối số",
+      "Mạng lưới số",
+      "Chuyển đổi số",
+      "Nền tảng số"
     ],
-    correctAnswer: 1,
-    explanation: "Công nghiệp 4.0 là sự kết hợp của AI (trí tuệ nhân tạo), IoT (Internet vạn vật), Big Data, Robot và các công nghệ số khác.",
-    keyword: "MACHINE" // 10 chữ cái
+    correctAnswer: 0,
+    explanation: "Kết nối số là trạng thái mà mọi thành phần trong hệ thống luôn tương tác liên tục qua mạng Internet, tạo nền tảng cho Công nghiệp 4.0.",
+    keyword: "KETNOIS",
+    keywordVi: "Kết nối số"
   },
   {
     id: 2,
-    question: "IoT trong Công nghiệp 4.0 có nghĩa là gì?",
+    question: "Hệ thống nào sử dụng Robot và phần mềm để thay thế con người thực hiện các công việc có tính chất lặp đi lặp lại?",
     options: [
-      "Internet of Things - kết nối các thiết bị",
-      "Internet of Technology - công nghệ internet",
-      "Internet of Tools - công cụ internet",
-      "Internet of Time - thời gian internet"
-    ],
-    correctAnswer: 0,
-    explanation: "IoT (Internet of Things) là mạng lưới các thiết bị vật lý được kết nối internet, cho phép thu thập và trao đổi dữ liệu.",
-    keyword: "CHAINED" // 10 chữ cái
-  },
-  {
-    id: 3,
-    question: "Công nghệ nào giúp dự đoán sự cố và bảo trì thiết bị trước khi hỏng?",
-    options: [
-      "Predictive Maintenance",
-      "Reactive Maintenance",
-      "Preventive Maintenance",
-      "Corrective Maintenance"
-    ],
-    correctAnswer: 0,
-    explanation: "Predictive Maintenance sử dụng AI và dữ liệu cảm biến để dự đoán khi nào thiết bị có thể hỏng, cho phép bảo trì chủ động.",
-    keyword: "AHEAD" // 10 chữ cái
-  },
-  {
-    id: 3,
-    question: "Big Data giúp ích gì trong sản xuất?",
-    options: [
-      "Chỉ lưu trữ nhiều dữ liệu",
-      "Phân tích xu hướng, dự đoán sự cố và tối ưu hóa quy trình",
-      "Vẽ biểu đồ đẹp",
-      "Gửi email tự động"
+      "Số hóa",
+      "Tự động hóa",
+      "Cơ khí hóa",
+      "Điện khí hóa"
     ],
     correctAnswer: 1,
-    explanation: "Big Data giúp phân tích dữ liệu lớn để dự đoán sự cố, tối ưu hóa hiệu suất và đưa ra quyết định thông minh.",
-    keyword: "IDEA" // 10 chữ cái
+    explanation: "Tự động hóa là quá trình sử dụng robot và phần mềm để tự động thực hiện các công việc lặp lại, giúp tăng năng suất và giảm sai sót.",
+    keyword: "TUDONGHOA",
+    keywordVi: "Tự động hóa"
+  },
+  {
+    id: 3,
+    question: "Nguy cơ lớn nhất mà người lao động truyền thống phải đối mặt khi không kịp thời cập nhật kỹ năng mới là gì?",
+    options: [
+      "Giảm lương",
+      "Thất nghiệp",
+      "Chuyển công tác",
+      "Làm thêm giờ"
+    ],
+    correctAnswer: 1,
+    explanation: "Thất nghiệp là nguy cơ lớn nhất khi người lao động không cập nhật kỹ năng mới, vì công nghệ thay thế các công việc thủ công và lặp lại.",
+    keyword: "THATNGHIEP",
+    keywordVi: "Thất nghiệp"
   },
   {
     id: 4,
-    question: "Robot trong Công nghiệp 4.0 chủ yếu dùng để làm gì?",
+    question: "Thuật ngữ chỉ sự chênh lệch giữa trình độ hiện có của công nhân và yêu cầu khắt khe của công nghệ hiện đại?",
     options: [
-      "Thay thế hoàn toàn con người",
-      "Hỗ trợ con người trong các công việc nguy hiểm, lặp lại hoặc đòi hỏi độ chính xác cao",
-      "Chỉ để giải trí",
-      "Thay thế tất cả máy móc cũ"
+      "Rào cản số",
+      "Khoảng cách kỹ năng",
+      "Thiếu hụt nguồn lực",
+      "Lỗ hổng đào tạo"
     ],
     correctAnswer: 1,
-    explanation: "Robot trong Công nghiệp 4.0 là công cụ hỗ trợ con người, đặc biệt trong các công việc đòi hỏi độ chính xác cao hoặc môi trường nguy hiểm.",
-    keyword: "HAND"
+    explanation: "Khoảng cách kỹ năng là khoảng cách giữa kỹ năng hiện có và kỹ năng cần thiết, đòi hỏi người lao động phải học tập và nâng cao trình độ liên tục.",
+    keyword: "KYNANGH",
+    keywordVi: "Khoảng cách kỹ năng"
   },
   {
     id: 5,
-    question: "Công nghiệp 4.0 ảnh hưởng như thế nào đến thị trường lao động?",
+    question: "Đây là nhóm kỹ năng 'bắt buộc' để người lao động bảo vệ dữ liệu cá nhân và nhận diện rủi ro trên không gian mạng?",
     options: [
-      "Loại bỏ hoàn toàn công việc thủ công",
-      "Tạo ra nhiều việc làm mới trong lĩnh vực công nghệ và giảm công việc lặp lại",
-      "Không ảnh hưởng gì",
-      "Chỉ tăng lương cho mọi người"
+      "An ninh mạng",
+      "Bảo mật dữ liệu",
+      "An toàn thông tin",
+      "Phòng chống virus"
     ],
-    correctAnswer: 1,
-    explanation: "Công nghiệp 4.0 tạo ra nhu cầu về kỹ năng mới như lập trình, phân tích dữ liệu, đồng thời giảm nhu cầu về công việc lặp lại.",
-    keyword: "IDEAL"
+    correctAnswer: 2,
+    explanation: "An toàn thông tin là kỹ năng bắt buộc giúp người lao động bảo vệ dữ liệu cá nhân và nhận diện các rủi ro an ninh mạng trong môi trường số.",
+    keyword: "ANTOATIN",
+    keywordVi: "An toàn thông tin"
   },
   {
     id: 6,
-    question: "Kỹ năng nào quan trọng nhất cho người lao động trong kỷ nguyên số?",
+    question: "Một lợi thế lớn giúp người lao động 4.0 có thể làm việc từ xa và điều chỉnh thời gian cá nhân một cách khoa học?",
     options: [
-      "Chỉ biết sử dụng máy tính cơ bản",
-      "Học tập suốt đời và khả năng thích ứng với công nghệ mới",
-      "Nhớ nhiều công thức toán",
-      "Gõ phím nhanh"
+      "Công việc từ xa",
+      "Cân bằng công việc",
+      "Thời gian linh hoạt",
+      "Du mục kỹ thuật số"
     ],
     correctAnswer: 1,
-    explanation: "Trong kỷ nguyên số, khả năng học tập suốt đời và thích ứng với thay đổi là quan trọng nhất vì công nghệ phát triển rất nhanh.",
-    keyword: "LEAD"
+    explanation: "Cân bằng công việc là khả năng cân bằng giữa công việc và cuộc sống cá nhân, một lợi thế lớn của kỷ nguyên số nhờ công nghệ hỗ trợ.",
+    keyword: "CANBANG",
+    keywordVi: "Cân bằng công việc"
   },
   {
     id: 7,
-    question: "Digital Twin là gì?",
+    question: "Để tồn tại trong môi trường công nghệ thay đổi chóng mặt, người công nhân cần duy trì tinh thần học tập như thế nào?",
     options: [
-      "Một loại robot mới",
-      "Bản sao kỹ thuật số của một vật thể hoặc hệ thống thực tế",
-      "Máy tính bảng",
-      "Ứng dụng di động"
+      "Học tập định kỳ",
+      "Học tập suốt đời",
+      "Học khi cần",
+      "Học theo yêu cầu"
     ],
     correctAnswer: 1,
-    explanation: "Digital Twin là mô hình kỹ thuật số mô phỏng chính xác một vật thể, hệ thống hoặc quy trình trong thế giới thực.",
-    keyword: "CHIEF"
+    explanation: "Học tập suốt đời là tinh thần học không ngừng nghỉ, cần thiết để không bị đào thải trong môi trường công nghệ thay đổi liên tục.",
+    keyword: "HOCTAPDOI",
+    keywordVi: "Học tập suốt đời"
   },
   {
     id: 8,
-    question: "Công nghệ nào giúp các thiết bị 'giao tiếp' với nhau?",
+    question: "Yếu tố giúp người lao động thoát khỏi các công việc thủ công đơn giản để tập trung vào những giá trị mới và độc đáo?",
     options: [
-      "WiFi",
-      "IoT và mạng lưới kết nối",
-      "Bluetooth",
-      "USB"
+      "Tự động hóa",
+      "Sáng tạo đổi mới",
+      "Số hóa",
+      "Tối ưu hóa"
     ],
     correctAnswer: 1,
-    explanation: "IoT và các mạng lưới kết nối cho phép các thiết bị trao đổi dữ liệu với nhau một cách tự động.",
-    keyword: "ONLINE"
+    explanation: "Sáng tạo đổi mới giúp người lao động tập trung vào việc tạo ra giá trị cao hơn, thay vì các công việc tay chân nặng nhọc đã được tự động hóa.",
+    keyword: "DOIMOI",
+    keywordVi: "Sáng tạo đổi mới"
   },
   {
     id: 9,
-    question: "Lợi ích chính của Công nghiệp 4.0 đối với doanh nghiệp là gì?",
+    question: "Mô hình liên kết chiến lược giữa Nhà trường - Doanh nghiệp - Nhà nước để đào tạo nguồn nhân lực sát thực tế gọi là gì?",
     options: [
-      "Chi phí thấp hơn",
-      "Năng suất cao hơn, chất lượng tốt hơn, thời gian đưa ra thị trường ngắn hơn",
-      "Chỉ tiết kiệm điện",
-      "Tăng số lượng nhân viên"
+      "Hợp tác liên kết",
+      "Hợp tác đa phương",
+      "Liên minh chiến lược",
+      "Đối tác ba bên"
     ],
     correctAnswer: 1,
-    explanation: "Công nghiệp 4.0 mang lại hiệu quả toàn diện: tăng năng suất, cải thiện chất lượng và rút ngắn thời gian sản xuất."
+    explanation: "Hợp tác đa phương là mô hình kết nối giữa Nhà trường - Doanh nghiệp - Nhà nước để xây dựng nguồn nhân lực chất lượng cao sát với thực tế.",
+    keyword: "HOPTACDAP",
+    keywordVi: "Hợp tác đa phương"
   },
   {
     id: 10,
-    question: "AI có thể giúp gì trong quản lý chuỗi cung ứng?",
+    question: "Công nghệ then chốt đóng vai trò hỗ trợ con người trong việc phân tích dữ liệu và đưa ra các quyết định sản xuất chính xác?",
     options: [
-      "Vẽ bản đồ logistics",
-      "Dự đoán nhu cầu, tối ưu hóa kho bãi và giảm lãng phí",
-      "Chỉ tính toán đường đi",
-      "Đếm số lượng hàng hóa"
+      "Máy học",
+      "Trí tuệ nhân tạo",
+      "Dữ liệu lớn",
+      "Phân tích dữ liệu"
     ],
     correctAnswer: 1,
-    explanation: "AI có thể phân tích xu hướng để dự đoán nhu cầu, tối ưu hóa vị trí kho bãi và giảm thiểu lãng phí trong chuỗi cung ứng."
+    explanation: "Trí tuệ nhân tạo là công nghệ then chốt hỗ trợ con người phân tích dữ liệu khổng lồ và đưa ra quyết định chính xác trong sản xuất.",
+    keyword: "TRITUENHAN",
+    keywordVi: "Trí tuệ nhân tạo"
   },
   {
     id: 11,
-    question: "Công nghệ nào giúp bảo trì thiết bị trước khi hỏng?",
+    question: "Đây là lực lượng lao động kết hợp giữa con người, dữ liệu và công nghệ thông minh trong kỷ nguyên mới?",
     options: [
-      "Predictive Maintenance sử dụng AI và cảm biến",
-      "Kiểm tra bằng mắt thường",
-      "Thay thế định kỳ theo lịch",
-      "Sửa chữa khi đã hỏng"
+      "Công nhân số",
+      "Công nhân 4.0",
+      "Công nhân thông minh",
+      "Công nhân công nghệ"
     ],
-    correctAnswer: 0,
-    explanation: "Predictive Maintenance sử dụng AI và dữ liệu cảm biến để dự đoán khi nào thiết bị có thể hỏng, cho phép bảo trì chủ động."
+    correctAnswer: 1,
+    explanation: "Công nhân 4.0 là lực lượng lao động kết hợp con người, dữ liệu và công nghệ thông minh, thích ứng với yêu cầu của Công nghiệp 4.0.",
+    keyword: "CONGNHAN4",
+    keywordVi: "Công nhân 4.0"
   },
   {
     id: 12,
-    question: "Công nghiệp 4.0 ảnh hưởng đến môi trường như thế nào?",
+    question: "Năng lực cốt lõi giúp người lao động chủ động kiểm soát và ứng dụng công nghệ vào công việc thay vì bị công nghệ chi phối?",
     options: [
-      "Tăng ô nhiễm",
-      "Giảm lãng phí, tối ưu hóa tài nguyên và giảm phát thải",
-      "Không ảnh hưởng",
-      "Tăng tiêu thụ năng lượng"
+      "Sử dụng công nghệ",
+      "Làm chủ công nghệ",
+      "Hiểu công nghệ",
+      "Quản lý công nghệ"
     ],
     correctAnswer: 1,
-    explanation: "Công nghiệp 4.0 giúp tối ưu hóa quy trình sản xuất, giảm lãng phí và sử dụng tài nguyên hiệu quả hơn, góp phần bảo vệ môi trường."
-  },
-  {
-    id: 13,
-    question: "Khái niệm 'Smart Factory' nghĩa là gì?",
-    options: [
-      "Nhà máy chỉ có máy thông minh",
-      "Nhà máy kết nối kỹ thuật số với khả năng tự tối ưu hóa",
-      "Nhà máy chỉ có đèn LED",
-      "Nhà máy chỉ sản xuất điện thoại"
-    ],
-    correctAnswer: 1,
-    explanation: "Smart Factory là nhà máy thông minh có thể tự thu thập dữ liệu, phân tích và tối ưu hóa quy trình sản xuất."
-  },
-  {
-    id: 14,
-    question: "Công nghệ nào giúp con người và máy móc hợp tác?",
-    options: [
-      "Cobots (Collaborative Robots)",
-      "Máy móc thay thế hoàn toàn",
-      "Chỉ máy tính",
-      "Điện thoại"
-    ],
-    correctAnswer: 0,
-    explanation: "Cobots là robot hợp tác được thiết kế để làm việc cùng với con người một cách an toàn và hiệu quả."
-  },
-  {
-    id: 15,
-    question: "Công nghiệp 4.0 đòi hỏi thay đổi gì ở cấp độ doanh nghiệp?",
-    options: [
-      "Chỉ mua máy móc mới",
-      "Thay đổi văn hóa, đào tạo nhân lực và chuyển đổi quy trình",
-      "Chỉ thay đổi logo",
-      "Chỉ tăng lương"
-    ],
-    correctAnswer: 1,
-    explanation: "Công nghiệp 4.0 đòi hỏi thay đổi toàn diện từ văn hóa doanh nghiệp, đào tạo nhân lực đến quy trình làm việc."
-  },
-  {
-    id: 16,
-    question: "Xu hướng tương lai của Công nghiệp 4.0 là gì?",
-    options: [
-      "Dừng phát triển",
-      "Tích hợp với Công nghiệp 5.0, tập trung vào con người và tính bền vững",
-      "Quay trở lại công nghiệp truyền thống",
-      "Chỉ tập trung vào lợi nhuận"
-    ],
-    correctAnswer: 1,
-    explanation: "Công nghiệp 5.0 sẽ tập trung vào sự hợp tác giữa con người và công nghệ, chú trọng đến tính bền vững và giá trị con người."
+    explanation: "Làm chủ công nghệ là năng lực cốt lõi giúp người lao động chủ động ứng dụng và kiểm soát công nghệ, thay vì bị nó chi phối.",
+    keyword: "LAMCHUC",
+    keywordVi: "Làm chủ công nghệ"
   }
 ];
