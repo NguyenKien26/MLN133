@@ -31,7 +31,7 @@ function App() {
         </>
       )}
 
-      {activeTab === 'games' && <GamesQuiz />}
+      {activeTab === 'games' && <GamesQuiz onTabChange={setActiveTab} />}
 
       {activeTab === 'appendix' && <Appendix />}
 
