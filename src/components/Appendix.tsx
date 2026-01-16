@@ -12,7 +12,7 @@ export default function Appendix() {
           </h2>
           <div className="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Video minh họa giúp hiểu rõ hơn về Công nhân trong thời đại Công nghiệp 4.0
+            Video ca nhạc chủ đề về Công nhân trong thời đại Công nghiệp 4.0
           </p>
         </div>
 
@@ -21,7 +21,7 @@ export default function Appendix() {
           <div className="aspect-video">
             <iframe
               className="w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              src="https://www.youtube.com/embed/D7SHfa_taVg"
               title="Công nghiệp 4.0 và Công nhân"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -36,11 +36,6 @@ export default function Appendix() {
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               Công nhân 4.0 – Thách thức và Giải pháp
             </h3>
-            <p className="text-gray-600 leading-relaxed">
-              Video cung cấp cái nhìn tổng quan về tác động của Cách mạng Công nghiệp 4.0
-              đến người lao động, những thách thức đang đặt ra và hướng thích nghi
-              trong tương lai.
-            </p>
           </div>
         </div>
 

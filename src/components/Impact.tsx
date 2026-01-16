@@ -1,48 +1,45 @@
-import { TrendingUp, Users, Briefcase, Globe } from 'lucide-react';
+import { TrendingUp, Users, Briefcase, Globe } from "lucide-react";
 
 export default function Impact() {
   const impacts = [
     {
       icon: TrendingUp,
-      number: '40%',
-      title: 'Tăng trưởng việc làm',
-      description: 'Các công việc mới trong lĩnh vực công nghệ và dịch vụ số dự kiến tăng 40% trong 5 năm tới',
+      number: "40%",
+      title: "Tăng trưởng việc làm",
+      description:
+        "Nhiều ngành nghề mới trong công nghệ, dữ liệu và dịch vụ số sẽ tiếp tục xuất hiện",
+      sourceLabel: "WEF – Future of Jobs Report 2025",
+      sourceUrl:
+        "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/",
     },
     {
       icon: Users,
-      number: '1.2B',
-      title: 'Người cần đào tạo',
-      description: 'Khoảng 1.2 tỷ người toàn cầu cần được đào tạo kỹ năng số để thích ứng với Công nghiệp 4.0',
+      number: "1.2B",
+      title: "Nhân lực chuyển đổi",
+      description:
+        "Khoảng 1.2 tỷ lao động toàn cầu cần được đào tạo lại kỹ năng để thích ứng với 4.0",
+      sourceLabel: "WEF – Future of Jobs Report 2025",
+      sourceUrl: "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/1-drivers-of-labour-market-transformation/",
     },
     {
       icon: Briefcase,
-      number: '50%',
-      title: 'Công việc sẽ thay đổi',
-      description: 'Một nửa tất cả các công việc sẽ thay đổi đáng kể trong 10 năm tới do tự động hóa',
+      number: "50%",
+      title: "Công việc sẽ thay đổi",
+      description:
+        "Tự động hóa và AI sẽ làm thay đổi bản chất của rất nhiều công việc hiện nay",
+      sourceLabel: "Tạp chí Cộng sản",
+      sourceUrl:
+        "https://www.tapchicongsan.org.vn/van_hoa_xa_hoi/-/2018/52474/view_content",
     },
     {
       icon: Globe,
-      number: '82%',
-      title: 'Cơ hội toàn cầu',
-      description: '82% doanh nghiệp trên toàn thế giới đang tìm kiếm nhân lực có kỹ năng số',
-    },
-  ];
-
-  const realExamples = [
-    {
-      title: 'Từ Thợ Cơ khí thành Kỹ sư IoT',
-      description: 'Một công nhân cơ khí ở Đài Loan học kỹ năng lập trình IoT và hiện quản lý hệ thống tự động hóa công xưởng. Thu nhập tăng gấp 2.5 lần.',
-      region: 'Đài Loan',
-    },
-    {
-      title: 'Từ Công nhân dệt thành Chuyên gia dữ liệu',
-      description: 'Một công nhân dệt ở Việt Nam được đào tạo phân tích dữ liệu sản xuất, giúp giảm lỗi sản phẩm 35% và được thăng chức quản lý chất lượng.',
-      region: 'Việt Nam',
-    },
-    {
-      title: 'Từ Lắp ráp điện tử thành Lập trình robot',
-      description: 'Một công nhân lắp ráp ở Thái Lan học lập trình robot công nghiệp, trở thành huấn luyện viên cho 50 công nhân khác.',
-      region: 'Thái Lan',
+      number: "Việt Nam",
+      title: "Tác động trong nước",
+      description:
+        "Cách mạng công nghiệp 4.0 tác động mạnh tới việc làm và cơ cấu lao động tại Việt Nam",
+      sourceLabel: "Cơ cấu lao động ở Việt Nam – Tạp chí Quản lý Nhà nước",
+      sourceUrl:
+        "https://www.quanlynhanuoc.vn/2025/11/14/co-cau-lao-dong-o-viet-nam-trong-boi-canh-cuoc-cach-mang-cong-nghiep-lan-thu-tu/",
     },
   ];
 
@@ -55,8 +52,8 @@ export default function Impact() {
           </h2>
           <div className="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Những con số và ví dụ thực tế cho thấy sự ảnh hưởng của Công nghiệp 4.0
-            đến thị trường lao động toàn cầu.
+            Những con số và ví dụ thực tế cho thấy sự ảnh hưởng của Công nghiệp
+            4.0 đến thị trường lao động toàn cầu.
           </p>
         </div>
 
@@ -72,47 +69,28 @@ export default function Impact() {
                   <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-lg shadow-lg">
                     <Icon className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-3xl font-bold text-blue-600">
-                    {impact.number}
-                  </span>
                 </div>
+
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                   {impact.title}
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+
+                <p className="text-sm text-gray-600 leading-relaxed mb-3">
                   {impact.description}
                 </p>
+
+                <a
+                  href={impact.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"
+                >
+                  Nguồn: {impact.sourceLabel}
+                  <span className="text-sm">↗</span>
+                </a>
               </div>
             );
           })}
-        </div>
-
-        <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-2xl p-8 sm:p-12 text-white mb-16">
-          <h3 className="text-3xl font-bold mb-4 text-center">Câu chuyện thành công</h3>
-          <p className="text-center text-blue-100 mb-12 max-w-2xl mx-auto">
-            Những ví dụ từ các công nhân đã thành công trong việc chuyển đổi kỹ năng
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {realExamples.map((example, index) => (
-              <div
-                key={index}
-                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20 hover:bg-white/20 transition-all"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-xl font-bold">
-                    {example.title}
-                  </h4>
-                  <span className="bg-orange-500 px-3 py-1 rounded-full text-sm font-semibold whitespace-nowrap">
-                    {example.region}
-                  </span>
-                </div>
-                <p className="text-blue-100 leading-relaxed">
-                  {example.description}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
