@@ -9,6 +9,7 @@ import Skills from './components/Skills';
 import Impact from './components/Impact';
 import GamesQuiz from './components/GameQuiz';
 import Appendix from './components/Appendix';
+import ChatBotWidget from './components/ChatBotWidget';
 import Footer from './components/Footer';
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
       {activeTab === 'appendix' && <Appendix />}
 
       <Footer />
+
+      <ChatBotWidget />
     </div>
   );
 }
