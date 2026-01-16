@@ -56,7 +56,7 @@ export default function ChatBotWidget() {
         id: "welcome",
         role: "assistant",
         content:
-          "👋 Xin chào! Tôi có thể giúp bạn tìm hiểu về:\n\n• Công nghiệp 4.0 là gì?\n• Thách thức của công nhân hiện đại\n• Cơ hội nghề nghiệp mới\n• Kỹ năng cần thiết\n• Giải pháp đào tạo\n\nBạn muốn biết điều gì?",
+          "👋 Xin chào! Tôi có thể giúp bạn tìm hiểu về:\n\n• Công nhân 4.0 là gì?\n• Thách thức của công nhân hiện đại\n• Cơ hội nghề nghiệp mới\n• Kỹ năng cần thiết\n• Giải pháp đào tạo\n\nBạn muốn biết điều gì?",
         timestamp: new Date(),
       };
       setMessages([welcomeMessage]);
