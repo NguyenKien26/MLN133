@@ -1,9 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
-import { Send, X, MessageCircle, Loader, AlertCircle } from 'lucide-react';
+import { useState, useRef, useEffect } from "react";
+import { Send, X, MessageCircle, Loader, AlertCircle } from "lucide-react";
 
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: Date;
 }
@@ -34,29 +34,29 @@ Chỉ trả lời các nội dung liên quan đến:
 - Giọng điệu: thân thiện, chuyên nghiệp, khuyến khích
 `;
 
-
 export default function ChatBotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   // ✅ Lấy API key từ env
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // ✅ Thêm welcome message khi mở chat lần đầu
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       const welcomeMessage: Message = {
-        id: 'welcome',
-        role: 'assistant',
-        content: '👋 Xin chào! Tôi có thể giúp bạn tìm hiểu về:\n\n• Công nghiệp 4.0 là gì?\n• Thách thức của công nhân hiện đại\n• Cơ hội nghề nghiệp mới\n• Kỹ năng cần thiết\n• Giải pháp đào tạo\n\nBạn muốn biết điều gì?',
+        id: "welcome",
+        role: "assistant",
+        content:
+          "👋 Xin chào! Tôi có thể giúp bạn tìm hiểu về:\n\n• Công nghiệp 4.0 là gì?\n• Thách thức của công nhân hiện đại\n• Cơ hội nghề nghiệp mới\n• Kỹ năng cần thiết\n• Giải pháp đào tạo\n\nBạn muốn biết điều gì?",
         timestamp: new Date(),
       };
       setMessages([welcomeMessage]);
@@ -67,7 +67,9 @@ export default function ChatBotWidget() {
     return (
       <div className="fixed bottom-6 right-6 z-40 bg-red-500 text-white p-4 rounded-lg shadow-lg max-w-xs">
         <AlertCircle className="w-5 h-5 inline mr-2" />
-        <span className="text-sm">Thiếu API Key. Vui lòng cấu hình VITE_GEMINI_API_KEY</span>
+        <span className="text-sm">
+          Thiếu API Key. Vui lòng cấu hình VITE_GEMINI_API_KEY
+        </span>
       </div>
     );
   }
@@ -78,13 +80,13 @@ export default function ChatBotWidget() {
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      role: 'user',
+      role: "user",
       content: inputValue,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
+    setInputValue("");
     setLoading(true);
     setError(null);
 
@@ -93,9 +95,9 @@ export default function ChatBotWidget() {
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             system_instruction: {
@@ -104,10 +106,10 @@ export default function ChatBotWidget() {
             contents: [
               // ✅ Chỉ gửi 5 message gần nhất để tiết kiệm token
               ...messages.slice(-5).map((msg) => ({
-                role: msg.role === 'user' ? 'user' : 'model',
+                role: msg.role === "user" ? "user" : "model",
                 parts: [{ text: msg.content }],
               })),
-              { role: 'user', parts: [{ text: userMessage.content }] },
+              { role: "user", parts: [{ text: userMessage.content }] },
             ],
             generationConfig: {
               temperature: 0.7,
@@ -121,41 +123,44 @@ export default function ChatBotWidget() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        
+
         // ✅ Xử lý các loại lỗi cụ thể
         if (response.status === 429) {
-          throw new Error('Quá nhiều yêu cầu. Vui lòng đợi 1 phút.');
+          throw new Error("Quá nhiều yêu cầu. Vui lòng đợi 1 phút.");
         } else if (response.status === 403) {
-          throw new Error('API Key không hợp lệ hoặc hết hạn.');
+          throw new Error("API Key không hợp lệ hoặc hết hạn.");
         } else {
           throw new Error(errorData.error?.message || `Lỗi ${response.status}`);
         }
       }
 
       const data = await response.json();
-      
+
       // ✅ Kiểm tra safety ratings
-      if (data.candidates?.[0]?.finishReason === 'SAFETY') {
-        throw new Error('Nội dung bị chặn bởi bộ lọc an toàn. Vui lòng hỏi câu khác.');
+      if (data.candidates?.[0]?.finishReason === "SAFETY") {
+        throw new Error(
+          "Nội dung bị chặn bởi bộ lọc an toàn. Vui lòng hỏi câu khác."
+        );
       }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
+        role: "assistant",
         content:
           data.candidates?.[0]?.content?.parts?.[0]?.text ||
-          'Xin lỗi, không thể xử lý câu hỏi. Vui lòng thử lại.',
+          "Xin lỗi, không thể xử lý câu hỏi. Vui lòng thử lại.",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Lỗi không xác định';
+      const errorMsg =
+        error instanceof Error ? error.message : "Lỗi không xác định";
       setError(errorMsg);
-      
+
       const errorMessage: Message = {
         id: (Date.now() + 2).toString(),
-        role: 'assistant',
+        role: "assistant",
         content: `⚠️ ${errorMsg}\n\nVui lòng thử lại hoặc hỏi câu khác.`,
         timestamp: new Date(),
       };
@@ -230,22 +235,24 @@ export default function ChatBotWidget() {
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex ${
+                  message.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 <div
                   className={`max-w-[85%] px-4 py-2.5 rounded-2xl shadow-sm ${
-                    message.role === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-none'
-                      : 'bg-white text-gray-800 rounded-bl-none border border-gray-200'
+                    message.role === "user"
+                      ? "bg-blue-600 text-white rounded-br-none"
+                      : "bg-white text-gray-800 rounded-bl-none border border-gray-200"
                   }`}
                 >
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">
                     {message.content}
                   </p>
                   <span className="text-[10px] opacity-60 mt-1 block">
-                    {message.timestamp.toLocaleTimeString('vi-VN', { 
-                      hour: '2-digit', 
-                      minute: '2-digit' 
+                    {message.timestamp.toLocaleTimeString("vi-VN", {
+                      hour: "2-digit",
+                      minute: "2-digit",
                     })}
                   </span>
                 </div>
@@ -270,9 +277,9 @@ export default function ChatBotWidget() {
               <p className="text-xs text-gray-500 mb-2">💡 Câu hỏi gợi ý:</p>
               <div className="flex flex-wrap gap-2">
                 {[
-                  'Công nghiệp 4.0 là gì?',
-                  'Kỹ năng cần thiết?',
-                  'Cơ hội nghề nghiệp?',
+                  "Thách thức của công nhân hiện nay?",
+                  "Kỹ năng nào cần học?",
+                  "Cơ hội việc làm mới?",
                 ].map((q) => (
                   <button
                     key={q}
