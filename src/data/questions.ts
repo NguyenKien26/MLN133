@@ -81,17 +81,17 @@ export const questions: Question[] = [
   },
   {
     id: 6,
-    question: "Một lợi thế lớn giúp người lao động 4.0 có thể làm việc từ xa và điều chỉnh thời gian cá nhân một cách khoa học?",
+    question: "Một cơ hội lớn giúp người lao động cân bằng giữa công việc và cuộc sống nhờ công nghệ số?",
     options: [
       "Công việc từ xa",
-      "Cân bằng công việc",
+      "Work-life balance",
       "Thời gian linh hoạt",
       "Du mục kỹ thuật số"
     ],
     correctAnswer: 1,
-    explanation: "Cân bằng công việc là khả năng cân bằng giữa công việc và cuộc sống cá nhân, một lợi thế lớn của kỷ nguyên số nhờ công nghệ hỗ trợ.",
-    keyword: "CANBANG",
-    keywordVi: "Cân bằng công việc"
+    explanation: "Work-life balance là khả năng giữ cân bằng giữa công việc và cuộc sống cá nhân nhờ công nghệ hỗ trợ làm việc linh hoạt.",
+    keyword: "WORKLIFEBALANCE",
+    keywordVi: "Work-life balance"
   },
   {
     id: 7,

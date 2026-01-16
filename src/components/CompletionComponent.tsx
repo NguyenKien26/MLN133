@@ -17,7 +17,7 @@ const CompletionComponent: React.FC<CompletionComponentProps> = ({
   const [showReveal, setShowReveal] = React.useState(false);
   const [revealProgress, setRevealProgress] = React.useState(0);
 
-  const percentage = (gameState.quizScore / 16) * 100;
+  const percentage = (gameState.quizScore / 12) * 100;
   const minutes = Math.floor((gameState.timeSpent || 0) / 60);
   const seconds = (gameState.timeSpent || 0) % 60;
 
@@ -98,174 +98,9 @@ const CompletionComponent: React.FC<CompletionComponentProps> = ({
                 <p className="text-xl text-gray-300 mb-4 font-ui">
                   {getScoreMessage(gameState.quizScore)}
                 </p>
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 inline-block">
-                  <p className="text-lg font-bold text-gray-800 font-academic">
-                    {getPerformanceLevel(gameState.quizScore)}
-                  </p>
-                </div>
               </div>
 
-              {/* Industry 4.0 Pyramid Visualization */}
-              <div className="mb-8">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5, duration: 0.8 }}
-                >
-                  <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-8 shadow-xl">
-                    <div className="text-center mb-6">
-                      <h2 className="text-2xl font-bold text-gray-800 mb-2 font-academic">
-                        Kim Tự Tháp Công Nghiệp 4.0
-                      </h2>
-                      <p className="text-gray-600 font-ui">
-                        Các công nghệ đã được mở khóa
-                      </p>
-                    </div>
 
-                    {/* Pyramid representation with unlocked pieces */}
-                    <div className="flex justify-center">
-                      <div className="relative">
-                        {/* Pyramid visualization */}
-                        <div className="grid grid-cols-4 gap-2 max-w-md mx-auto">
-                          {/* Row 1 - Top */}
-                          <div className="col-start-2">
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                              gameState.completedPuzzlePieces >= 1 ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                            }`}>
-                              {gameState.completedPuzzlePieces >= 1 ? 'AI' : '1'}
-                            </div>
-                          </div>
-
-                          {/* Row 2 */}
-                          <div className="col-span-2 grid grid-cols-2 gap-2">
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                              gameState.completedPuzzlePieces >= 2 ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                            }`}>
-                              {gameState.completedPuzzlePieces >= 2 ? 'IoT' : '2'}
-                            </div>
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                              gameState.completedPuzzlePieces >= 3 ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                            }`}>
-                              {gameState.completedPuzzlePieces >= 3 ? 'Big Data' : '3'}
-                            </div>
-                          </div>
-
-                          {/* Row 3 */}
-                          <div className="col-span-3 grid grid-cols-3 gap-2">
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                              gameState.completedPuzzlePieces >= 4 ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                            }`}>
-                              {gameState.completedPuzzlePieces >= 4 ? 'Robot' : '4'}
-                            </div>
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                              gameState.completedPuzzlePieces >= 5 ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                            }`}>
-                              {gameState.completedPuzzlePieces >= 5 ? 'Cloud' : '5'}
-                            </div>
-                            <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                              gameState.completedPuzzlePieces >= 6 ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                            }`}>
-                              {gameState.completedPuzzlePieces >= 6 ? '5G' : '6'}
-                            </div>
-                          </div>
-
-                          {/* Row 4 - Bottom */}
-                          <div className="col-span-4 grid grid-cols-4 gap-2">
-                            {['AR/VR', 'Blockchain', 'Quantum', 'Edge'].map((tech, index) => (
-                              <div key={tech} className={`w-12 h-12 rounded-lg flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                                gameState.completedPuzzlePieces >= (7 + index) ? 'bg-gradient-to-br from-blue-500 to-purple-600 text-white' : 'bg-gray-300 text-gray-600'
-                              }`}>
-                                {gameState.completedPuzzlePieces >= (7 + index) ? tech : (7 + index)}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Success badge */}
-                        {gameState.completedPuzzlePieces > 0 && (
-                          <div className="absolute -top-2 -right-2 bg-green-500 text-white px-3 py-1 rounded-full font-bold text-sm shadow-lg">
-                            <motion.div
-                              initial={{ scale: 0, rotate: -180 }}
-                              animate={{ scale: 1, rotate: 0 }}
-                              transition={{ delay: 1.5, duration: 0.8 }}
-                            >
-                              ✓ {gameState.completedPuzzlePieces}/16 HOÀN THÀNH
-                            </motion.div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <p className="text-center text-gray-600 mt-6 font-ui text-sm leading-relaxed">
-                      Mỗi câu trả lời đúng giúp mở khóa một công nghệ của Công nghiệp 4.0.
-                      Bạn đã khám phá được {gameState.completedPuzzlePieces} công nghệ!
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Game Summary */}
-              <div className="mb-8 p-8 bg-gradient-to-r from-blue-50 via-purple-50 to-indigo-50 rounded-2xl border border-blue-200">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                  className="text-center"
-                >
-                  <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-academic mb-4">
-                    🎉 Tổng Kết Hành Trình Công Nghiệp 4.0
-                  </h3>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div className="text-left">
-                      <h4 className="text-xl font-bold text-gray-800 mb-3 font-academic">📚 Hành Trình Học Tập:</h4>
-                      <ul className="space-y-2 text-gray-700 font-ui">
-                        <li className="flex items-center gap-2">
-                          <span className="text-green-500">✓</span>
-                          Khám phá 6 chương câu chuyện về Công nghiệp 4.0
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-green-500">✓</span>
-                          Gặp gỡ 6 nhân vật chuyên gia và nhà lãnh đạo
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-green-500">✓</span>
-                          Hiểu rõ các khía cạnh của cuộc Cách mạng Công nghiệp 4.0
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="text-left">
-                      <h4 className="text-xl font-bold text-gray-800 mb-3 font-academic">🎯 Thành Tựu:</h4>
-                      <ul className="space-y-2 text-gray-700 font-ui">
-                        <li className="flex items-center gap-2">
-                          <span className="text-blue-500">🎖️</span>
-                          Điểm số: <strong className="text-blue-600">{gameState.quizScore}/16</strong>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-purple-500">🧩</span>
-                          Mảnh puzzle: <strong className="text-purple-600">{gameState.completedPuzzlePieces}/16</strong>
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <span className="text-green-500">⏱️</span>
-                          Thời gian: <strong className="text-green-600">{minutes}:{seconds.toString().padStart(2, '0')}</strong>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Performance Message */}
-                  <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 border border-white/50">
-                    <p className="text-lg text-gray-800 font-ui leading-relaxed">
-                      {getScoreMessage(gameState.quizScore)}
-                    </p>
-                    <p className="text-sm text-gray-600 mt-2 font-ui">
-                      Bạn đã khám phá được <strong className="text-blue-600">{Math.round(percentage)}%</strong> kiến thức về Công nghiệp 4.0
-                      và mở khóa <strong className="text-purple-600">{gameState.completedPuzzlePieces}</strong> công nghệ tiên tiến!
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
 
               {/* Statistics */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
@@ -277,7 +112,7 @@ const CompletionComponent: React.FC<CompletionComponentProps> = ({
                   >
                     <Target className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                     <h3 className="text-2xl font-bold text-blue-800 mb-2 font-academic">
-                      {gameState.quizScore}/16
+                      {gameState.quizScore}/12
                     </h3>
                     <p className="text-blue-600 font-ui">Điểm số</p>
                     <div className="w-full bg-blue-200 rounded-full h-2 mt-3">
@@ -299,7 +134,7 @@ const CompletionComponent: React.FC<CompletionComponentProps> = ({
                   >
                     <Puzzle className="w-8 h-8 text-green-600 mx-auto mb-3" />
                     <h3 className="text-2xl font-bold text-green-800 mb-2 font-academic">
-                      {gameState.completedPuzzlePieces}/16
+                      {gameState.completedPuzzlePieces}/12
                     </h3>
                     <p className="text-green-600 font-ui">Mảnh puzzle</p>
                   </motion.div>
@@ -337,55 +172,13 @@ const CompletionComponent: React.FC<CompletionComponentProps> = ({
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <button
-                  onClick={() => setShowPuzzle(true)}
-                  className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-3 text-lg"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.1, duration: 0.5 }}
-                  >
-                    <Puzzle className="w-6 h-6" />
-                    Xem Puzzle Đầy Đủ
-                  </motion.div>
-                </button>
-
-                <button
-                  onClick={handleRevealImage}
-                  className="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-3 text-lg"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.15, duration: 0.5 }}
-                  >
-                    <Trophy className="w-6 h-6" />
-                    🎭 Reveal Hình Ảnh Cuối Cùng
-                  </motion.div>
-                </button>
-
-                <button
-                  onClick={handleRestart}
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-3 text-lg"
-                >
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.2, duration: 0.5 }}
-                  >
-                    <RotateCcw className="w-6 h-6" />
-                    Chơi lại
-                  </motion.div>
-                </button>
-
-                <button
                   onClick={onGoHome}
                   className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center gap-3 text-lg"
                 >
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 1.3, duration: 0.5 }}
+                    transition={{ delay: 1.1, duration: 0.5 }}
                   >
                     <Home className="w-6 h-6" />
                     Về trang chủ

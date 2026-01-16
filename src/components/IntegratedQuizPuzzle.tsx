@@ -14,7 +14,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   onGoHome
 }) => {
   const MAX_QUESTIONS = 12;
-  const { updateQuizScore, updatePuzzleProgress } = useGameContext();
+  const { gameState, updateQuizScore, updatePuzzleProgress } = useGameContext();
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
   const [showExplanation, setShowExplanation] = React.useState(false);
   const [score, setScore] = React.useState(0);
@@ -22,6 +22,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
     new Array(MAX_QUESTIONS).fill(false)
   );
   const [timeSpent, setTimeSpent] = React.useState(0);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
 
   // Puzzle state - 12 pieces for Industry 4.0
   const [puzzlePieces, setPuzzlePieces] = React.useState<boolean[]>(
@@ -35,20 +36,73 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   const [wrongGuesses, setWrongGuesses] = React.useState(0);
   const MAX_WRONG_GUESSES = 6;
 
+  // Lưu trạng thái của từng câu hỏi
+  const [questionStates, setQuestionStates] = React.useState<Record<number, {
+    wordGuess: string;
+    guessResult: 'correct' | 'wrong' | null;
+    wrongGuesses: number;
+    showExplanation: boolean;
+  }>>({});
+
+  // Reset everything when quay lại bước quiz mới (vd: chơi lại)
+  const resetAllState = React.useCallback(() => {
+    setCurrentQuestion(0);
+    setShowExplanation(false);
+    setScore(0);
+    setAnsweredQuestions(new Array(MAX_QUESTIONS).fill(false));
+    setTimeSpent(0);
+    setPuzzlePieces(new Array(12).fill(false));
+    setShowPuzzle(false);
+    setGamePhase('quiz');
+    setGuessInput('');
+    setGuessResult(null);
+    setWordGuess('');
+    setWrongGuesses(0);
+  }, []);
+
   // Ref để theo dõi việc submit đang trong quá trình
   const isSubmittingRef = React.useRef(false);
 
   // Get current question
   const currentQ = questions[currentQuestion];
 
-  // Timer effect
+  // Timer: chạy khi đang ở phase quiz, dừng khi sang summary/hoàn tất
   React.useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeSpent(prev => prev + 1);
-    }, 1000);
+    if (gamePhase === 'quiz') {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = setInterval(() => setTimeSpent(prev => prev + 1), 1000);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    }
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [gamePhase]);
+
+  // Khi trạng thái trò chơi quay lại bước quiz (reset), làm mới toàn bộ state nội bộ để tránh giữ kết quả cũ
+  React.useEffect(() => {
+    if (gameState.currentStep === 'quiz') {
+      resetAllState();
+    }
+  }, [gameState.currentStep, resetAllState]);
+
+  // Restore trạng thái khi chuyển câu hỏi
+  React.useEffect(() => {
+    const savedState = questionStates[currentQuestion];
+    if (savedState) {
+      setWordGuess(savedState.wordGuess);
+      setGuessResult(savedState.guessResult);
+      setWrongGuesses(savedState.wrongGuesses);
+      setShowExplanation(savedState.showExplanation);
+    }
+  }, [currentQuestion, questionStates]);
 
   const revealRandomPiece = () => {
     const availablePieces = puzzlePieces
@@ -76,14 +130,22 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
     return stages[Math.min(wrongGuesses, stages.length - 1)];
   };
 
+  const normalizeKeyword = (text: string) =>
+    text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // strip Vietnamese diacritics
+      .replace(/[^a-z0-9]/gi, ''); // remove spaces, hyphens, punctuation for tolerant match
+
   const handleKeywordSubmit = () => {
-    if (!wordGuess.trim() || answeredQuestions[currentQuestion]) return;
+    if (answeredQuestions[currentQuestion]) return;
 
-    // Normalize: trim, lowercase, loại bỏ khoảng trắng thừa
-    const userGuess = wordGuess.trim().toLowerCase().replace(/\s+/g, ' ');
-    const correctKeyword = (currentQ.keywordVi?.toLowerCase() || '').replace(/\s+/g, ' ');
+    const userGuess = normalizeKeyword(wordGuess);
+    const correctKeyword = normalizeKeyword(currentQ.keywordVi || '');
 
-    // So sánh chính xác
+    if (!userGuess) return;
+
+    // So sánh sau khi bỏ dấu, bỏ khoảng trắng và dấu gạch nối để chấp nhận "work-life" hoặc "work life"
     if (userGuess === correctKeyword) {
       setGuessResult('correct');
       setScore(score + 1);
@@ -114,35 +176,77 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   };
 
   const handleNextQuestion = () => {
+    // Lưu trạng thái câu hiện tại
+    setQuestionStates(prev => ({
+      ...prev,
+      [currentQuestion]: {
+        wordGuess,
+        guessResult,
+        wrongGuesses,
+        showExplanation
+      }
+    }));
+
     if (currentQuestion < MAX_QUESTIONS - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      setWordGuess('');
-      setGuessResult(null);
-      setShowExplanation(false);
+      // Restore trạng thái câu tiếp theo nếu có
+      const nextState = questionStates[currentQuestion + 1];
+      if (nextState) {
+        setWordGuess(nextState.wordGuess);
+        setGuessResult(nextState.guessResult);
+        setWrongGuesses(nextState.wrongGuesses);
+        setShowExplanation(nextState.showExplanation);
+      } else {
+        setWordGuess('');
+        setGuessResult(null);
+        setShowExplanation(false);
+        setWrongGuesses(0);
+      }
       setShowPuzzle(false);
       isSubmittingRef.current = false;
-      resetHangman();
     } else {
       // Chuyển sang phase summary khi hoàn thành 12 câu
       setGamePhase('summary');
+      setGuessInput('');
+      setGuessResult(null);
       updateQuizScore(score);
     }
   };
 
   const handlePreviousQuestion = () => {
+    // Lưu trạng thái câu hiện tại
+    setQuestionStates(prev => ({
+      ...prev,
+      [currentQuestion]: {
+        wordGuess,
+        guessResult,
+        wrongGuesses,
+        showExplanation
+      }
+    }));
+
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
-      setWordGuess('');
-      setGuessResult(null);
-      setShowExplanation(false);
+      // Restore trạng thái câu trước
+      const prevState = questionStates[currentQuestion - 1];
+      if (prevState) {
+        setWordGuess(prevState.wordGuess);
+        setGuessResult(prevState.guessResult);
+        setWrongGuesses(prevState.wrongGuesses);
+        setShowExplanation(prevState.showExplanation);
+      } else {
+        setWordGuess('');
+        setGuessResult(null);
+        setShowExplanation(false);
+        setWrongGuesses(0);
+      }
       setShowPuzzle(false);
       isSubmittingRef.current = false;
-      resetHangman();
     }
   };
 
   const handleGuessSubmit = () => {
-    if (!guessInput.trim()) return;
+    if (!guessInput.trim()) return; // cho phép nhập nhiều lần đến khi đúng
     
     const lowerGuess = guessInput.toLowerCase().trim();
     const correctAnswers = [
@@ -265,7 +369,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                   <motion.div
                     className="bg-gradient-to-r from-green-500 to-green-600 h-3 rounded-full"
                     initial={{ width: 0 }}
-                    animate={{ width: `${(completedPieces / 8) * 100}%` }}
+                    animate={{ width: `${(completedPieces / 12) * 100}%` }}
                     transition={{ duration: 0.5 }}
                   />
                 </div>
@@ -341,7 +445,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                               value={wordGuess}
                               onChange={(e) => setWordGuess(e.target.value)}
                               onKeyPress={(e) => e.key === 'Enter' && handleKeywordSubmit()}
-                              placeholder="Ví dụ: Làm chủ công nghệ"
+                              placeholder="Ví dụ: Chuyển đổi số"
                               className="flex-1 px-4 py-2 rounded-lg border-2 border-blue-300 focus:border-blue-600 focus:outline-none font-ui text-lg"
                               autoFocus
                             />
@@ -374,13 +478,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                         <div className="bg-red-100 border border-red-400 rounded-lg p-4 text-center">
                           <p className="text-red-700 font-semibold font-ui mb-2">💀 Game Over! Từ khoá là: {currentQ.keywordVi}</p>
                           <button
-                            onClick={() => {
-                              resetHangman();
-                              const newAnsweredQuestions = [...answeredQuestions];
-                              newAnsweredQuestions[currentQuestion] = true;
-                              setAnsweredQuestions(newAnsweredQuestions);
-                              setShowExplanation(true);
-                            }}
+                            onClick={handleNextQuestion}
                             className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-ui"
                           >
                             Tiếp tục
@@ -422,7 +520,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                   <button
                     onClick={handlePreviousQuestion}
                     disabled={currentQuestion === 0}
-                    className={`btn-outline flex items-center gap-2 ${
+                    className={`bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 ${
                       currentQuestion === 0 ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
@@ -517,7 +615,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
             <div className="flex justify-center gap-4 mt-8">
               <button
                 onClick={onGoHome}
-                className="btn-outline flex items-center gap-2"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
               >
                 <Home className="w-5 h-5" />
                 Về trang chủ
@@ -624,7 +722,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                   Đoán Xem Đây Là Gì?
                 </h2>
 
-                {guessResult === null ? (
+                {guessResult === null || guessResult === 'wrong' ? (
                   <div className="space-y-4">
                     <p className="text-gray-600 font-ui">
                       Bức ảnh puzzle hoàn chỉnh biểu tượng cho thế giới số hóa. Đoán xem đây là gì hoặc nó đại diện cho khái niệm nào?
@@ -637,10 +735,11 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                         onKeyPress={(e) => e.key === 'Enter' && handleGuessSubmit()}
                         placeholder="Nhập câu trả lời của bạn..."
                         className="flex-1 px-4 py-3 rounded-lg border-2 border-yellow-300 focus:border-orange-500 focus:outline-none font-ui"
+                        disabled={guessResult === 'correct'}
                       />
                       <button
                         onClick={handleGuessSubmit}
-                        disabled={!guessInput.trim()}
+                        disabled={!guessInput.trim() || guessResult === 'correct'}
                         className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold px-6 py-3 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                       >
                         <CheckCircle className="w-5 h-5" />
@@ -681,15 +780,7 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                       <p className="text-blue-700 font-ui mb-4">
                         Không hoàn toàn chính xác, nhưng cũng gần lắm! Đây là biểu tượng của <strong>Công nghiệp 4.0</strong> - kỷ nguyên của chuyển đổi số, tự động hóa và kết nối toàn cầu.
                       </p>
-                      <button
-                        onClick={() => {
-                          setGuessInput('');
-                          setGuessResult(null);
-                        }}
-                        className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-bold px-6 py-2 rounded-lg transition-all duration-300"
-                      >
-                        Thử Lại
-                      </button>
+                      <p className="text-sm text-blue-600 font-ui">Hãy thử lại với câu trả lời khác!</p>
                     </div>
                   </motion.div>
                 )}
@@ -700,18 +791,19 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.5 }}
-                className="flex justify-center gap-4 mt-8"
+                className="flex justify-center gap-4 mt-8 w-full"
               >
                 <button
                   onClick={handleFinishGame}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+                  disabled={!showExplanation || gamePhase !== 'summary'}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Award className="w-5 h-5" />
                   Hoàn Thành Trò Chơi
                 </button>
                 <button
                   onClick={onGoHome}
-                  className="btn-outline flex items-center gap-2"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
                 >
                   <Home className="w-5 h-5" />
                   Về Trang Chủ
