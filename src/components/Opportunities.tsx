@@ -49,7 +49,7 @@ export default function Opportunities() {
       icon: Target,
       title: "Cơ hội khởi nghiệp",
       description:
-        "Chi phí khởi nghiệp giảm nhờ công nghệ. Nhiều cơ hội kinh doanh mới xuất hiện trong các lĩnh vực công nghệ.",
+        "Công nghệ cùng chính sách hỗ trợ tạo điều kiện thuận lợi, mở ra nhiều cơ hội khởi nghiệp sáng tạo.",
       sourceLabel: "Quân đội Nhân dân",
       sourceUrl:
         "https://www.qdnd.vn/kinh-te/cac-van-de/tao-dong-luc-cho-cong-dong-khoi-nghiep-sang-tao-521717",

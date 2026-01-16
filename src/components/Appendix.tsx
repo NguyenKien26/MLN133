@@ -8,12 +8,9 @@ export default function Appendix() {
         {/* Title */}
         <div className="text-center mb-12">
           <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            Phụ lục
+            Video ca nhạc
           </h2>
           <div className="w-24 h-1 bg-orange-500 mx-auto mb-6"></div>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Video ca nhạc chủ đề về Công nhân trong thời đại Công nghiệp 4.0
-          </p>
         </div>
 
         {/* Video Section */}
@@ -30,12 +27,6 @@ export default function Appendix() {
           </div>
 
           <div className="p-6 sm:p-8">
-            <span className="inline-block bg-blue-100 text-blue-700 text-sm font-semibold px-3 py-1 rounded-full mb-4">
-              Video tham khảo
-            </span>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">
-              Công nhân 4.0 – Thách thức và Giải pháp
-            </h3>
           </div>
         </div>
 

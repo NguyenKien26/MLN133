@@ -9,7 +9,7 @@ export default function Header({ activeTab, onTabChange }: HeaderProps) {
   const tabs = [
     { id: 'content', label: 'Nội dung' },
     { id: 'games', label: 'Trò chơi & Quiz' },
-    { id: 'appendix', label: 'Phụ lục' },
+    { id: 'appendix', label: 'Video' },
   ];
 
   return (
