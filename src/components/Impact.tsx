@@ -10,7 +10,7 @@ export default function Impact() {
         "Nhiều ngành nghề mới trong công nghệ, dữ liệu và dịch vụ số sẽ tiếp tục xuất hiện",
       sourceLabel: "WEF – Future of Jobs Report 2025",
       sourceUrl:
-        "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/",
+        "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/2-jobs-outlook/",
     },
     {
       icon: Users,

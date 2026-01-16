@@ -10,6 +10,7 @@ import Impact from './components/Impact';
 import GamesQuiz from './components/GameQuiz';
 import Appendix from './components/Appendix';
 import ChatBotWidget from './components/ChatBotWidget';
+import Conclusion from './components/Conclusion';
 import Footer from './components/Footer';
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
           <Impact />
           <Opportunities />
           <Solutions />
-          <Skills />         
+          <Skills />   
+          <Conclusion />      
         </>
       )}
 
