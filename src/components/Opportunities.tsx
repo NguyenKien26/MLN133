@@ -14,9 +14,9 @@ export default function Opportunities() {
       title: "Việc làm chất lượng cao",
       description:
         "Tạo ra nhiều công việc mới với thu nhập cao hơn, đòi hỏi kỹ năng chuyên môn và sáng tạo thay vì lao động thủ công đơn giản.",
-      sourceLabel: "Báo Đà Nẵng",
+      sourceLabel: "Tạp chí Cộng sản",
       sourceUrl:
-        "https://baodanang.vn/chuyen-dich-co-cau-lao-dong-va-yeu-cau-xay-dung-giai-cap-cong-nhan-phai-manh-ca-luong-va-chat-3078413.html",
+        "https://www.tapchicongsan.org.vn/van_hoa_xa_hoi/-/2018/52474/view_content",
     },
     {
       icon: TrendingUp,

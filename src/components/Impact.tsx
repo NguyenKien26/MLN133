@@ -8,18 +8,18 @@ export default function Impact() {
       title: "Tăng trưởng việc làm",
       description:
         "Nhiều ngành nghề mới trong công nghệ, dữ liệu và dịch vụ số sẽ tiếp tục xuất hiện",
-      sourceLabel: "WEF – Future of Jobs Report 2023",
+      sourceLabel: "WEF – Future of Jobs Report 2025",
       sourceUrl:
-        "https://www.weforum.org/reports/the-future-of-jobs-report-2023",
+        "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/3-skills-outlook/",
     },
     {
       icon: Users,
       number: "1.2B",
-      title: "Người cần đào tạo",
+      title: "Nhân lực chuyển đổi",
       description:
         "Khoảng 1.2 tỷ lao động toàn cầu cần được đào tạo lại kỹ năng để thích ứng với 4.0",
-      sourceLabel: "WEF – Reskilling Revolution: Preparing 1 billion people for tomorrow’s economy",
-      sourceUrl: "https://www.weforum.org/impact/reskilling-revolution-preparing-1-billion-people-for-tomorrow-s-economy-2c69a13e66/",
+      sourceLabel: "WEF – Future of Jobs Report 2025",
+      sourceUrl: "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/1-drivers-of-labour-market-transformation/",
     },
     {
       icon: Briefcase,
@@ -27,9 +27,9 @@ export default function Impact() {
       title: "Công việc sẽ thay đổi",
       description:
         "Tự động hóa và AI sẽ làm thay đổi bản chất của rất nhiều công việc hiện nay",
-      sourceLabel: "McKinsey Global Institute",
+      sourceLabel: "Tạp chí Cộng sản",
       sourceUrl:
-        "https://www.mckinsey.com/featured-insights/future-of-work/ai-automation-and-the-future-of-work-ten-things-to-solve-for",
+        "https://www.tapchicongsan.org.vn/van_hoa_xa_hoi/-/2018/52474/view_content",
     },
     {
       icon: Globe,
@@ -69,9 +69,6 @@ export default function Impact() {
                   <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-lg shadow-lg">
                     <Icon className="w-6 h-6 text-white" />
                   </div>
-                  <span className="text-3xl font-bold text-blue-600">
-                    {impact.number}
-                  </span>
                 </div>
 
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
