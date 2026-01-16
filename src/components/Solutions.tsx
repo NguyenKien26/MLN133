@@ -86,32 +86,6 @@ export default function Solutions() {
             );
           })}
         </div>
-
-        <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 sm:p-12 text-white shadow-2xl">
-          <div className="max-w-3xl mx-auto text-center">
-            <h3 className="text-3xl font-bold mb-4">
-              Hành động ngay hôm nay
-            </h3>
-            <p className="text-xl text-blue-100 mb-6 leading-relaxed">
-              Tương lai thuộc về những người chủ động thích ứng. Đừng chờ đợi,
-              hãy bắt đầu học hỏi và phát triển kỹ năng mới ngay bây giờ!
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm sm:text-base">
-              <span className="bg-white/20 px-4 py-2 rounded-full border border-white/30">
-                Học tập liên tục
-              </span>
-              <span className="bg-white/20 px-4 py-2 rounded-full border border-white/30">
-                Thích ứng nhanh
-              </span>
-              <span className="bg-white/20 px-4 py-2 rounded-full border border-white/30">
-                Tư duy đổi mới
-              </span>
-              <span className="bg-white/20 px-4 py-2 rounded-full border border-white/30">
-                Hợp tác hiệu quả
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

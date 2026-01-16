@@ -22,7 +22,7 @@ Chỉ trả lời các nội dung liên quan đến:
 
 # SỐ LIỆU THAM KHẢO
 - 40% tăng trưởng việc làm công nghệ cao (WEF)
-- 1.2 tỷ người cần đào tạo lại kỹ năng (WEF 2023)
+- 1.2 tỷ thanh niên gia nhập lao động, nhưng chỉ 420 triệu việc làm được tạo (World Bank)
 - 50% công việc sẽ thay đổi đáng kể
 - 82% doanh nghiệp thiếu nhân lực có kỹ năng số (McKinsey)
 

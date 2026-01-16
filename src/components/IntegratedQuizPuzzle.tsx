@@ -248,7 +248,14 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
   const handleGuessSubmit = () => {
     if (!guessInput.trim()) return; // cho phép nhập nhiều lần đến khi đúng
     
-    const lowerGuess = guessInput.toLowerCase().trim();
+    const normalize = (text: string) =>
+      text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/g, '');
+
+    const normalizedGuess = normalize(guessInput);
     const correctAnswers = [
       'công nghiệp 4.0',
       'cnv4',
@@ -260,8 +267,13 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
       'fourth industrial revolution',
       'industry 4'
     ];
-    
-    if (correctAnswers.some(ans => lowerGuess.includes(ans) || ans.includes(lowerGuess))) {
+
+    const normalizedAnswers = correctAnswers.map(normalize);
+    const isCorrect =
+      normalizedGuess.length > 0 &&
+      normalizedAnswers.some(ans => ans === normalizedGuess);
+
+    if (isCorrect) {
       setGuessResult('correct');
     } else {
       setGuessResult('wrong');
@@ -416,22 +428,34 @@ const IntegratedQuizPuzzle: React.FC<IntegratedQuizPuzzleProps> = ({
                         {/* Keyword hint display */}
                         <div className="bg-white rounded-lg p-6 w-full text-center">
                           {wrongGuesses === 0 ? (
-                            <p className="text-2xl text-gray-400 font-academic whitespace-nowrap">
-                              ●●●●●●●●●●●●●●●●●●●●
+                            <p className="text-2xl text-gray-400 font-academic whitespace-pre-wrap break-words tracking-widest">
+                              {currentQ.keywordVi?.split('').map(char => char === ' ' ? ' ' : '_').join(' ') || '_ _ _'}
                             </p>
                           ) : (
                             <motion.div
                               key={wrongGuesses}
                               initial={{ opacity: 0, scale: 0.9 }}
                               animate={{ opacity: 1, scale: 1 }}
-                              className="text-2xl font-bold text-blue-600 font-academic whitespace-nowrap"
+                              className="text-2xl font-bold text-blue-600 font-academic whitespace-pre-wrap break-words tracking-widest"
                             >
-                              {currentQ.keywordVi?.substring(0, Math.min(wrongGuesses, currentQ.keywordVi?.length || 0))}
+                              {currentQ.keywordVi?.substring(0, Math.min(wrongGuesses, currentQ.keywordVi?.length || 0))
+                                .split('')
+                                .map(char => char)
+                                .join(' ')}
+                              {currentQ.keywordVi?.substring(Math.min(wrongGuesses, currentQ.keywordVi?.length || 0))
+                                .split('')
+                                .map(char => char === ' ' ? ' ' : '_')
+                                .join(' ') || ''}
                             </motion.div>
                           )}
                         </div>
                         <p className="text-xs text-gray-500 font-ui mt-2">
                           {currentQ.keywordVi?.length} ký tự
+                          {currentQ.keywordVi && currentQ.keywordVi.split(' ').length > 1 && (
+                            <span className="ml-2 text-blue-600 font-semibold">
+                              💡 Hint: {currentQ.keywordVi.split(' ').length - 1} khoảng trắng
+                            </span>
+                          )}
                         </p>
                       </div>
 

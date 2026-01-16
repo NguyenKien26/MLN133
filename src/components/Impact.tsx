@@ -17,8 +17,8 @@ export default function Impact() {
       number: "1.2B",
       title: "Nhân lực chuyển đổi",
       description:
-        "Khoảng 1.2 tỷ lao động toàn cầu cần được đào tạo lại kỹ năng để thích ứng với 4.0",
-      sourceLabel: "WEF – Future of Jobs Report 2025",
+        "Chuyển đổi số và tự động hóa tăng nhu cầu phát triển kỹ năng, đặc biệt với 1,2 tỷ người gia nhập lao động toàn cầu.",
+      sourceLabel: "World Bank & WEF – Future of Jobs Report 2025",
       sourceUrl: "https://www.weforum.org/publications/the-future-of-jobs-report-2025/in-full/1-drivers-of-labour-market-transformation/",
     },
     {
@@ -129,7 +129,7 @@ export default function Impact() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-orange-500 font-bold text-lg">!</span>
-                <span>Chênh lệch giữa hộ giàu và hộ nghèo</span>
+                <span>Khoảng cách giàu – nghèo</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-orange-500 font-bold text-lg">!</span>

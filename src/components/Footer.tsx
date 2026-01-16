@@ -36,23 +36,23 @@ export default function Footer() {
             <h4 className="text-lg font-bold mb-4">Liên kết nhanh</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#about" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Giới thiệu
+                <a
+                  href="https://docs.google.com/document/d/1E7Lb3wHuNxgQtCOqeQ1O8yCa9tzo9Y_mAH9AsHxr3ds/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                >
+                  AI Usage
                 </a>
               </li>
               <li>
-                <a href="#challenges" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Thách thức
-                </a>
-              </li>
-              <li>
-                <a href="#opportunities" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Cơ hội
-                </a>
-              </li>
-              <li>
-                <a href="#solutions" className="text-gray-400 hover:text-orange-500 transition-colors">
-                  Giải pháp
+                <a
+                  href="https://docs.google.com/document/d/16MxUc6BgqcLb_0QbsBbs7SjOIjx9tJMno96HquEy3Uw/edit?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                >
+                  Q&A
                 </a>
               </li>
             </ul>

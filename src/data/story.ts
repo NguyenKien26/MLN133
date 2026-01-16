@@ -45,7 +45,7 @@ export const storyScenes: StoryScene[] = [
   {
     id: 4,
     title: "Thách thức của chuyển đổi số",
-    content: "Trong một buổi thảo luận với các kỹ sư, Minh được nghe về những khó khăn khi chuyển đổi sang Công nghiệp 4.0: 'Chúng ta cần đào tạo lại nhân lực, đầu tư công nghệ mới, và thay đổi văn hóa doanh nghiệp. Nhưng lợi ích thu được sẽ lớn hơn nhiều so với chi phí bỏ ra.'",
+    content: "Trong một buổi thảo luận với các kỹ sư, Minh được nghe về những khó khăn khi chuyển đổi sang Công nghiệp 4.0: 'Hàng tỷ thanh niên gia nhập lao động, nhưng việc làm không đủ. Chúng ta cần phát triển kỹ năng, đầu tư công nghệ, và tạo việc làm mới. Đây là cơ hội lớn nếu chúng ta hành động kịp thời.'",
     character: "Chị Lan",
     characterRole: "Kỹ sư chuyển đổi số",
     location: "Phòng họp công ty",
